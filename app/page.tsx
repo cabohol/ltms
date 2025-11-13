@@ -131,8 +131,8 @@ export default function LTMSPortal() {
                   </div>
                 )}
               </div>
-              <NavLink icon={<Phone size={18} />} href="#" label="CONTACT" />
-              <NavLink icon={<UserPlus size={18} />} href="#" label="REGISTER" />
+              <NavLink icon={<Phone size={18} />} href="/contact" label="CONTACT" />
+              <NavLink icon={<UserPlus size={18} />} href="/register" label="REGISTER" />
               <NavLink icon={<LogIn size={18} />} href="/login" label="LOGIN" />
             </div>
 

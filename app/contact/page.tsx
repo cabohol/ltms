@@ -3,20 +3,13 @@
 import React, { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
-import { User, Lock, Eye, EyeOff, Globe, GraduationCap, Phone, UserPlus, LogIn, Menu, X } from 'lucide-react';
+import { User, Globe, GraduationCap, Mail, FileText, MessageSquare, LogIn, UserPlus, Menu, Phone, Smartphone } from "lucide-react";
 
-export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+export default function ContactPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isELearningOpen, setIsELearningOpen] = useState(false);
 
-  const handleSubmit = () => {
-    console.log("Login attempt:", { email, password, rememberMe });
-  };
-
+  
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -120,19 +113,19 @@ export default function LoginPage() {
                   </div>
                 )}
               </div>
-              <NavLink icon={<Phone size={18} />} href="/contact" label="CONTACT" />
-              <NavLink icon={<UserPlus size={18} />} href="/register" label="REGISTER" />
-              <div className="relative">
+                <div className="relative">
                 <Link
-                  href="/login"
+                  href="/contact"
                   className="flex items-center gap-2 px-4 py-2 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/10"
-                  aria-label="LOGIN"
+                  aria-label="CONTACT"
                 >
                   <LogIn size={18} />
-                  <span className="hidden lg:inline">LOGIN</span>
+                  <span className="hidden lg:inline">CONTACT</span>
                 </Link>
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>
               </div>
+              <NavLink icon={<UserPlus size={18} />} href="/register" label="REGISTER" />
+              <NavLink icon={<UserPlus size={18} />} href="/login" label="LOGIN" />
             </div>
 
             {/* Hamburger Menu Button - Mobile */}
@@ -183,7 +176,7 @@ export default function LoginPage() {
                   </div>
                 )}
               </div>              
-              <MobileNavLink icon={<Phone size={18} />} href="#" label="CONTACT" onClick={() => setIsMobileMenuOpen(false)} />
+              <MobileNavLink icon={<Phone size={18} />} href="/contact" label="CONTACT" onClick={() => setIsMobileMenuOpen(false)} />
               <MobileNavLink icon={<UserPlus size={18} />} href="/register" label="REGISTER" onClick={() => setIsMobileMenuOpen(false)} />
               <MobileNavLink icon={<LogIn size={18} />} href="/login" label="LOGIN" onClick={() => setIsMobileMenuOpen(false)} />
             </div>
@@ -191,104 +184,145 @@ export default function LoginPage() {
         </div>
       </nav>
 
-      {/* Login Content - Centered like screenshot */}
-      <div className="flex-1 flex items-center justify-center px-4 py-8">
-        {/* Outer blue/gray frame */}
-        <div className="w-full max-w-lg rounded-2xl p-6 backdrop-blur-sm shadow-2xl border-4 border-blue-500/50">
-          {/* Inner white card */}
-          <div className="bg-white rounded-xl p-10 shadow-xl">
-            {/* Logo */}
-            <div className="flex justify-center mb-6">
-              <Image 
-                src="/ltologo.png" 
-                alt="LTO Logo" 
-                width={120} 
-                height={120} 
-                className="object-contain"
-              />
-            </div>
+<div className="relative z-10 flex justify-center items-center py-16 px-4">
+  <div className="bg-white/95 backdrop-blur-sm shadow-2xl rounded-xl p-8 w-full max-w-5xl border border-gray-200 relative">
+{/* Logo + Title Row */}
+<div className="flex items-center gap-4 mb-6">
+  <Image
+    src="/ltologo.png"
+    alt="LTO Logo"
+    width={70}
+    height={70}
+    className="w-25 h-25 object-contain"
+  />
 
-            {/* Title */}
-            <h1 className="text-center text-4xl font-bold text-blue-900 mb-2 whitespace-nowrap">
-              LTMS PORTAL
-            </h1>
+  <h2 className="text-2xl font-bold text-blue-900">
+    Write an email to LTO Client Care
+  </h2>
+</div>
 
-            <p className="text-center text-blue-900 text-base font-medium mb-8">
-              Land Transportation Management System
-            </p>
+<form className="space-y-5 relative">
+  {/* Full Name */}
+  <div>
+    <label className="block text-sm font-semibold text-blue-900 mb-1">
+      Full Name or Client ID <span className="text-red-600">*</span>
+    </label>
 
-            {/* Form */}
-            <div className="space-y-4">
-            {/* Email Input */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pr-3 border-r border-gray-300">
-                <User className="w-5 h-5 text-gray-500" />
-              </div>
-              <input
-                type="text"
-                placeholder="Email or LTO Client Number"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-gray-300 pl-12 pr-4 py-3 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-800 placeholder-gray-400 text-sm transition-all bg-gray-50 focus:bg-white"
-              />
-            </div>
+    <div className="relative">
+      <User className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-700" size={18} />
+      <div className="absolute left-11 top-2 bottom-2 w-px bg-gray-300"></div>
 
-            {/* Password Input */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pr-3 border-r border-gray-300">
-                <Lock className="w-5 h-5 text-gray-500" />
-              </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-300 pl-12 pr-12 py-3 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-800 placeholder-gray-400 text-sm transition-all bg-gray-50 focus:bg-white"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
-              >
-                {showPassword ? (
-                  <EyeOff className="w-5 h-5" />
-                ) : (
-                  <Eye className="w-5 h-5" />
-                )}
-              </button>
-            </div>
+      <input
+        type="text"
+        className="w-full px-4 py-3 pl-16 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
+        placeholder="Name/Client ID"
+      />
+    </div>
+  </div>
 
-              {/* Remember & Forgot */}
-           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pt-2 space-y-2 sm:space-y-0">
-            <label className="flex items-center gap-2 cursor-pointer order-1 sm:order-none">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 accent-blue-600 cursor-pointer rounded border-gray-300"
-              />
-              <span className="text-gray-800 text-sm">Remember Username</span>
-            </label>
-            <a
-              href="#"
-              className="text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors order-2 sm:order-none"
-            >
-              Forgot Password
-            </a>
-          </div>
+  {/* Email */}
+  <div>
+    <label className="block text-sm font-semibold text-blue-900 mb-1">
+      Email <span className="text-red-600">*</span>
+    </label>
+
+    <div className="relative">
+      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-700" size={18} />
+      <div className="absolute left-11 top-2 bottom-2 w-px bg-gray-300"></div>
+
+      <input
+        type="email"
+        className="w-full px-4 py-3 pl-16 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
+        placeholder="Enter your email"
+      />
+    </div>
+  </div>
+
+  {/* Contact Number */}
+<div>
+  <label className="block text-sm font-semibold text-blue-900 mb-1">
+    Contact Number <span className="text-red-600">*</span>
+  </label>
+
+  <div className="flex gap-4">
+
+    {/* Area Code */}
+    <div className="relative w-32">
+      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-700" size={18} />
+      <div className="absolute left-11 top-2 bottom-2 w-px bg-gray-300"></div>
+
+      <input
+        type="text"
+        className="w-full px-1 py-3 pl-16 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
+        placeholder="e.g. +63"
+      />
+    </div>
+
+    {/* Mobile Number */}
+    <div className="relative flex-1">
+      <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-700" size={18} />
+      <div className="absolute left-11 top-2 bottom-2 w-px bg-gray-300"></div>
+
+      <input
+        type="text"
+        className="w-full px-4 py-3 pl-16 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
+        placeholder="Enter mobile number"
+      />
+    </div>
+
+  </div>
+</div>
 
 
-              {/* Sign In Button */}
-              <button
-                onClick={handleSubmit}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-md transition-all duration-200 shadow-md hover:shadow-lg text-base mt-4"
-              >
-                Sign In
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+  {/* Subject */}
+  <div>
+    <label className="block text-sm font-semibold text-blue-900 mb-1">
+      Topic of your inquiry <span className="text-red-600">*</span>
+    </label>
+
+    <div className="relative">
+      <FileText className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-700" size={18} />
+      <div className="absolute left-11 top-2 bottom-2 w-px bg-gray-300"></div>
+
+      <input
+        type="text"
+        className="w-full px-4 py-3 pl-16 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
+        placeholder="Enter topic of your inquiry"
+      />
+    </div>
+  </div>
+
+  {/* Message */}
+  <div>
+    <label className="block text-sm font-semibold text-blue-900 mb-1">
+      Let us know of your concern <span className="text-red-600">*</span>
+    </label>
+
+    <div className="relative">
+      <MessageSquare className="absolute left-4 top-4 text-blue-700" size={18} />
+      <div className="absolute left-11 top-3 bottom-3 w-px bg-gray-300"></div>
+
+      <textarea
+        className="w-full px-4 py-3 pl-16 rounded-lg border border-gray-300 h-32 resize-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
+        placeholder="Write your message..."
+      ></textarea>
+    </div>
+  </div>
+
+  {/* Submit */}
+  <button
+    type="submit"
+    className="w-full bg-blue-900 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-800 transition-all shadow-md"
+  >
+    Send Message
+  </button>
+</form>
+
+  </div>
+</div>
+
+
+
     </div>
   );
 }
