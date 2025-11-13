@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from "next/image";
-import { Home, GraduationCap, Phone, UserPlus, LogIn, Menu, X } from 'lucide-react';
+import { Globe, GraduationCap, Phone, UserPlus, LogIn, Menu, X } from 'lucide-react';
 
 export default function LTMSPortal() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -17,7 +17,13 @@ export default function LTMSPortal() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900">
+    <div
+      className="min-h-screen bg-cover bg-center bg-no-repeat relative"
+      style={{
+        backgroundImage: "url('/manila-traffic.jpg')", 
+      }}
+    >
+  <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>
       {/* Navigation */}
       <nav className="bg-blue-900/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
         <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -39,7 +45,7 @@ export default function LTMSPortal() {
 
             {/* Navigation Links - Center */}
             <div className="hidden md:flex items-center justify-center flex-1 gap-8">
-              <NavLink icon={<Home size={18} />} href="#" label="LTO OFFICIAL WEBPAGE" />
+              <NavLink icon={<Globe size={18} />} href="https://lto.gov.ph/" label="LTO OFFICIAL WEBPAGE" />
               <div className="relative">
                 <button
                   onClick={toggleELearning}
@@ -127,7 +133,7 @@ export default function LTMSPortal() {
               </div>
               <NavLink icon={<Phone size={18} />} href="#" label="CONTACT" />
               <NavLink icon={<UserPlus size={18} />} href="#" label="REGISTER" />
-              <NavLink icon={<LogIn size={18} />} href="#" label="LOGIN" />
+              <NavLink icon={<LogIn size={18} />} href="/login" label="LOGIN" />
             </div>
 
             {/* Hamburger Menu Button - Mobile */}
@@ -143,7 +149,7 @@ export default function LTMSPortal() {
           {/* Mobile Navigation Menu */}
           {isMobileMenuOpen && (
             <div className="md:hidden pb-4 border-t border-white/10">
-              <MobileNavLink icon={<Home size={18} />} href="#" label="LTO OFFICIAL WEBPAGE" onClick={() => setIsMobileMenuOpen(false)} />
+              <MobileNavLink icon={<Globe size={18} />} href="https://lto.gov.ph/" label="LTO OFFICIAL WEBPAGE" onClick={() => setIsMobileMenuOpen(false)} />
               {/* E-Learning Mobile Dropdown */}
               <div>
                 <button
@@ -208,11 +214,11 @@ export default function LTMSPortal() {
       {/* Hero Section */}
       <main className="relative overflow-hidden">
         {/* Animated Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
+        {/* <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}></div>
-        </div>
+        </div> */}
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-13">
           <div className="text-center space-y-8">
@@ -229,12 +235,12 @@ export default function LTMSPortal() {
             </div>
 
             {/* LTMS PORTAL Text */}
-            <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight drop-shadow-2xl">
+            <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight drop-shadow-2xl -mt-8">
               LTMS PORTAL
             </h2>
 
             {/* Tagline - WCAG Compliant with high contrast */}
-            <p className="max-w-4xl mx-auto text-lg sm:text-xl lg:text-2xl text-white font-medium leading-relaxed drop-shadow-lg px-4">
+            <p className="max-w-4xl mx-auto text-lg sm:text-xl lg:text-2xl text-white font-medium leading-relaxed drop-shadow-lg px-4 -mt-5">
               A front line government agency showcasing fast and efficient public service 
               for a progressive land transport sector
             </p>
@@ -248,12 +254,14 @@ export default function LTMSPortal() {
                 </span>
               </button>
               
-              <button className="group relative px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold text-lg rounded-lg border-2 border-white shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/50 w-full sm:w-auto">
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  <LogIn size={24} />
-                  LOG IN
-                </span>
-              </button>
+            <a href="/login"
+              className="group relative px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold text-lg rounded-lg border-2 border-white shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/50 w-full sm:w-auto"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <LogIn size={24} />
+                LOG IN
+              </span>
+            </a>
             </div>
 
            {/* Stats Section - Enhanced contrast */}
