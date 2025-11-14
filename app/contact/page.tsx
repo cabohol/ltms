@@ -3,13 +3,225 @@
 import React, { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
-import { User, Globe, GraduationCap, Mail, FileText, MessageSquare, LogIn, UserPlus, Menu, Phone, Smartphone } from "lucide-react";
+import { 
+  User, 
+  Globe, 
+  GraduationCap, 
+  Mail, 
+  FileText, 
+  MessageSquare, 
+  LogIn, 
+  UserPlus, 
+  Menu, 
+  X,           
+  Phone, 
+  Smartphone, 
+  Send 
+} from "lucide-react";
 
 export default function ContactPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isELearningOpen, setIsELearningOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [fullNameError, setFullNameError] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [contactNumberError, setContactNumberError] = useState("");
+  const [countryCode, setCountryCode] = useState("+63"); 
+  const [subject, setSubject] = useState("");
+  const [subjectError, setSubjectError] = useState("");
+  const [message, setMessage] = useState("");
+  const [messageError, setMessageError] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
-  
+
+  // Validation for email 
+  const requiredValidator = (value: string): true | string =>
+    value.trim() !== "" ? true : "Email is required";
+
+  const emailValidator = (value: string): true | string =>
+    value.includes("@") ? true : "Email must include '@'";
+
+  const emailRules: Array<(value: string) => true | string> = [
+    requiredValidator,
+    emailValidator,
+  ];
+
+  const validateEmail = (value: string) => {
+    for (let rule of emailRules) {
+      const result = rule(value);
+      if (result !== true) {
+        setEmailError(result);
+        return;
+      }
+    }
+    setEmailError("");
+  };
+
+  //  Validation for name 
+  const fullNameRequired = (value: string): true | string =>
+  value.trim() !== "" ? true : "Full name is required";
+
+  const fullNameMinLength = (value: string): true | string =>
+    value.length >= 3 ? true : "Full name must be at least 3 characters";
+
+  const fullNameRules: Array<(value: string) => true | string> = [
+    fullNameRequired,
+    fullNameMinLength,
+  ];
+
+  const validateFullName = (value: string) => {
+    for (let rule of fullNameRules) {
+      const result = rule(value);
+      if (result !== true) {
+        setFullNameError(result);
+        return;
+      }
+    }
+    setFullNameError("");
+  };
+
+  // Validation for contact number
+  const countryCodes = [
+    { code: "PHL", dial: "+63", length: 10 },      // Philippines
+    { code: "ABW", dial: "+297", length: 7 },      // Aruba
+    { code: "AFG", dial: "+93", length: 9 },       // Afghanistan
+    { code: "AGO", dial: "+244", length: 9 },      // Angola
+    { code: "AIA", dial: "+1264", length: 7 },     // Anguilla
+    { code: "ALA", dial: "+358", length: 10 },     // Åland Islands
+    { code: "ALB", dial: "+355", length: 9 },      // Albania
+    { code: "AND", dial: "+376", length: 6 },      // Andorra
+    { code: "ARE", dial: "+971", length: 9 },      // United Arab Emirates
+  ];
+
+  const countryPhoneLengths: Record<string, number> = countryCodes.reduce(
+    (acc, item) => {
+      acc[item.dial] = item.length;
+      return acc;
+    },
+    {} as Record<string, number>
+  );
+
+
+  const contactRequired = (value: string): true | string =>
+    value.trim() !== "" ? true : "Contact number is required";
+
+  const contactNumeric = (value: string): true | string =>
+    /^[0-9]+$/.test(value) ? true : "Contact number must contain digits only";
+
+  const contactLength = (value: string): true | string => {
+    const requiredLength = countryPhoneLengths[countryCode];
+    return value.length === requiredLength
+      ? true
+      : `Contact number must be exactly ${requiredLength} digits`;
+  };
+
+  // All validators in order
+  const contactRules: Array<(value: string) => true | string> = [
+    contactRequired,
+    contactNumeric,
+    contactLength,
+  ];
+
+  const validateContactNumber = (value: string) => {
+    for (let rule of contactRules) {
+      const result = rule(value);
+      if (result !== true) {
+        setContactNumberError(result);
+        return;
+      }
+    }
+    setContactNumberError("");
+  };
+
+  // Validation for subject
+  const subjectRequired = (value: string): true | string =>
+    value.trim() !== "" ? true : "Subject is required";
+
+  const subjectMinLength = (value: string): true | string =>
+    value.length >= 3 ? true : "Subject must be at least 3 characters";
+
+  const subjectRules: Array<(value: string) => true | string> = [
+    subjectRequired,
+    subjectMinLength,
+  ];
+
+  const validateSubject = (value: string) => {
+    for (let rule of subjectRules) {
+      const result = rule(value);
+      if (result !== true) {
+        setSubjectError(result);
+        return;
+      }
+    }
+    setSubjectError("");
+  };
+
+  // Validation for message
+  const messageRequired = (value: string): true | string =>
+  value.trim() !== "" ? true : "Message is required";
+
+  const messageMinLength = (value: string): true | string =>
+    value.length >= 10 ? true : "Message must be at least 10 characters";
+
+  const messageRules: Array<(value: string) => true | string> = [
+    messageRequired,
+    messageMinLength,
+  ];
+
+  const validateMessage = (value: string) => {
+    for (let rule of messageRules) {
+      const result = rule(value);
+      if (result !== true) {
+        setMessageError(result);
+        return;
+      }
+    }
+    setMessageError("");
+  };
+
+  // Handle form submission
+  const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
+
+  validateEmail(email);
+  validateFullName(fullName);
+  validateContactNumber(contactNumber);
+  validateSubject(subject);
+  validateMessage(message);
+
+  // Check if any field has error
+  if (
+    email === "" ||
+    fullName === "" ||
+    contactNumber === "" ||
+    subject === "" ||
+    message === "" ||
+    emailError ||
+    fullNameError ||
+    contactNumberError ||
+    subjectError ||
+    messageError
+  ) {
+    setAlertMessage("Please fill in all required fields correctly.");
+    setShowAlert(true);
+    return;
+  }
+
+  setShowAlert(false);
+
+  // Submit logic
+  console.log("Form Submitted Successfully!", {
+    fullName,
+    email,
+    contactNumber,
+    subject,
+    message,
+  });
+};
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -18,11 +230,10 @@ export default function ContactPage() {
     setIsELearningOpen(!isELearningOpen);
   };
 
+  
   return (
-    <div
-      className="min-h-screen bg-cover bg-center bg-no-repeat relative"
-      style={{ backgroundImage: "url('/mechanic.jpeg')" }}
-    >
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat relative"
+         style={{ backgroundImage: "url('/mechanic.jpeg')" }}>
     <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>
 
       {/* Navigation */}
@@ -184,145 +395,240 @@ export default function ContactPage() {
         </div>
       </nav>
 
-<div className="relative z-10 flex justify-center items-center py-16 px-4">
-  <div className="bg-white/95 backdrop-blur-sm shadow-2xl rounded-xl p-8 w-full max-w-5xl border border-gray-200 relative">
-{/* Logo + Title Row */}
-<div className="flex items-center gap-4 mb-6">
-  <Image
-    src="/ltologo.png"
-    alt="LTO Logo"
-    width={70}
-    height={70}
-    className="w-25 h-25 object-contain"
-  />
+    <div className="relative z-10 flex justify-center items-center sm:items-start py-8 sm:py-8 px-2 sm:px-4">
+      {/* Outer blue/gray frame */}
+      <div className="w-full max-w-5xl rounded-xl sm:rounded-2xl p-2 sm:p-6 backdrop-blur-sm shadow-2xl border-2 sm:border-4 border-blue-500/50">
+        <div className="bg-white/95 backdrop-blur-sm shadow-2xl rounded-lg sm:rounded-xl p-4 sm:p-8 w-full border border-gray-200 relative">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-start items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <Image src="/ltologo.png" alt="LTO Logo" width={70} height={70} className="w-25 h-25 object-contain"/>            
+            <h2 className="text-xl sm:text-2xl font-bold text-blue-900 text-center md:text-left">
+              Write an email to LTO Client Care
+            </h2>
+          </div>
 
-  <h2 className="text-2xl font-bold text-blue-900">
-    Write an email to LTO Client Care
-  </h2>
-</div>
+          {showAlert && (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded relative mb-4 animate-fade-in"
+            role="alert"
+          >
+            <strong className="font-bold text-sm sm:text-base block sm:inline">Error: </strong>
+            <span className="block sm:inline text-xs sm:text-sm mt-1 sm:mt-0">{alertMessage}</span>
 
-<form className="space-y-5 relative">
-  {/* Full Name */}
-  <div>
-    <label className="block text-sm font-semibold text-blue-900 mb-1">
-      Full Name or Client ID <span className="text-red-600">*</span>
-    </label>
+            {/* Close Button */}
+            <button
+              type="button"
+              className="absolute top-1/2 right-2 sm:right-3 -translate-y-1/2 text-red-700 hover:text-red-900 font-bold text-lg sm:text-xl"
+              onClick={() => setShowAlert(false)}
+              aria-label="Close alert"
+            >
+              ×
+            </button>
+          </div>
+          )}
 
-    <div className="relative">
-      <User className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-700" size={18} />
-      <div className="absolute left-11 top-2 bottom-2 w-px bg-gray-300"></div>
+          <form className="space-y-4 sm:space-y-5 relative" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
+              {/* LEFT COLUMN */}
+              <div className="space-y-4 sm:space-y-5">
+                {/* Full Name */}
+                <div>
+                  <label className="block text-xs sm:text-sm font-semibold text-blue-900 mb-1">
+                    Full Name or Client ID <span className="text-red-600">*</span>
+                  </label>
 
-      <input
-        type="text"
-        className="w-full px-4 py-3 pl-16 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
-        placeholder="Name/Client ID"
-      />
+                  <div className="relative">
+                    <User 
+                      className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-blue-700" 
+                      size={16}
+                    />
+                    <div className="absolute left-9 sm:left-11 top-2 bottom-2 w-px bg-gray-300"></div>
+
+                    <input
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => {
+                        setFullName(e.target.value);
+                        validateFullName(e.target.value);
+                      }}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 pl-12 sm:pl-16 rounded-lg border ${
+                        fullNameError ? "border-red-500" : "border-gray-300"
+                      } focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none text-sm sm:text-base`}
+                      placeholder="Name/Client ID"
+                    />
+                  </div>
+
+                  {fullNameError && (
+                    <p className="text-red-600 text-xs sm:text-sm mt-1">{fullNameError}</p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className="block text-xs sm:text-sm font-semibold text-blue-900 mb-1">
+                    Email <span className="text-red-600">*</span>
+                  </label>
+
+                  <div className="relative">
+                    <Mail
+                      className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-blue-700"
+                      size={16}
+                    />
+                    <div className="absolute left-9 sm:left-11 top-2 bottom-2 w-px bg-gray-300"></div>
+
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        validateEmail(e.target.value);
+                      }}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 pl-12 sm:pl-16 rounded-lg border ${
+                        emailError ? "border-red-500" : "border-gray-300"
+                      } focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none text-sm sm:text-base`}
+                      placeholder="e.g.yourname@sample.com"
+                    />
+                  </div>
+
+                  {emailError && (
+                    <p className="text-red-600 text-xs sm:text-sm mt-1">{emailError}</p>
+                  )}
+                </div>
+
+                {/* Contact Number  */}
+                <div>
+                  <label className="block text-xs sm:text-sm font-semibold text-blue-900 mb-1">
+                    Contact Number <span className="text-red-600">*</span>
+                  </label>
+
+                  <div className="flex gap-2 sm:gap-3">
+                    {/* Dropdown for Intl. Code */}
+                    <select
+                      value={countryCode}
+                      onChange={(e) => {
+                        setCountryCode(e.target.value);
+                        setContactNumber("");
+                        setContactNumberError("");
+                      }}
+                      className="w-32 sm:w-36 md:w-auto px-2.5 sm:px-3 md:px-4 py-2.5 sm:py-3 rounded-lg border border-blue-100 bg-white 
+                        focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none
+                        text-xs sm:text-sm md:text-base font-medium
+                        cursor-pointer transition-all duration-200
+                        hover:border-blue-300"
+                    >
+                      {countryCodes.map((item) => (
+                        <option key={item.code} value={item.dial}>
+                          {item.code} ({item.dial})
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* Contact Number Input */}
+                    <div className="relative flex-1">
+                      <Smartphone
+                        className="absolute left-2.5 sm:left-3 md:left-4 top-1/2 -translate-y-1/2 text-blue-700"
+                        size={16}
+                      />
+                      <div className="absolute left-8 sm:left-9 md:left-11 top-2 bottom-2 w-px bg-gray-300"></div>
+
+                      <input
+                        type="text"
+                        value={contactNumber}
+                        maxLength={countryPhoneLengths[countryCode] || 11}
+                        inputMode="numeric"
+                        placeholder="Enter mobile number"
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (/^\d*$/.test(val)) {
+                            setContactNumber(val);
+                            validateContactNumber(val);
+                          }
+                        }}
+                        className={`w-full px-2.5 sm:px-3 md:px-4 py-2.5 sm:py-3 pl-10 sm:pl-12 md:pl-16 rounded-lg border ${
+                          contactNumberError ? "border-red-500" : "border-gray-300"
+                        } focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none
+                        text-xs sm:text-sm md:text-base transition-all duration-200`}
+                      />
+                    </div>
+                  </div>
+
+                  {contactNumberError && (
+                    <p className="text-red-600 text-xs sm:text-sm mt-1 px-1">{contactNumberError}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* RIGHT COLUMN */}
+              <div className="space-y-4 sm:space-y-5">
+                {/* Subject */}
+                <div>
+                  <label className="block text-xs sm:text-sm font-semibold text-blue-900 mb-1">
+                    Topic of your inquiry <span className="text-red-600">*</span>
+                  </label>
+
+                  <div className="relative">
+                    <FileText
+                      className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-blue-700"
+                      size={16}
+                    />
+                    <div className="absolute left-9 sm:left-11 top-2 bottom-2 w-px bg-gray-300"></div>
+
+                    <input
+                      type="text"
+                      value={subject}
+                      onChange={(e) => {
+                        setSubject(e.target.value);
+                        validateSubject(e.target.value);
+                      }}
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 pl-12 sm:pl-16 rounded-lg border ${
+                        subjectError ? "border-red-500" : "border-gray-300"
+                      } focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none text-sm sm:text-base`}
+                      placeholder="Enter topic of your inquiry"
+                    />
+                  </div>
+
+                  {subjectError && (
+                    <p className="text-red-600 text-xs sm:text-sm mt-1">{subjectError}</p>
+                  )}
+                </div>
+
+                {/* Message */}
+                <div>
+                  <label className="block text-xs sm:text-sm font-semibold text-blue-900 mb-1">
+                    Let us know of your concern <span className="text-red-600">*</span>
+                  </label>
+
+                  <div className="relative">
+                    <MessageSquare className="absolute left-3 sm:left-4 top-3 sm:top-4 text-blue-700" size={16} />
+                    <div className="absolute left-9 sm:left-11 top-2.5 sm:top-3 bottom-2.5 sm:bottom-3 w-px bg-gray-300"></div>
+
+                    <textarea
+                      className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 pl-12 sm:pl-16 rounded-lg border ${
+                        messageError ? "border-red-500" : "border-gray-300"
+                      } h-32 sm:h-40 resize-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none text-sm sm:text-base`}
+                      placeholder="Write your message..."
+                      value={message}
+                      onChange={(e) => {
+                        setMessage(e.target.value);
+                        validateMessage(e.target.value);
+                      }}
+                    ></textarea>
+                  </div>
+
+                  {messageError && (
+                    <p className="text-red-600 text-xs sm:text-sm mt-1">{messageError}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 sm:py-3 rounded-lg text-base sm:text-lg 
+                                  font-semibold transition-all shadow-md flex items-center justify-center gap-2">
+              <Send size={18} className="sm:w-5 sm:h-5" /> Send Message
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
-  </div>
-
-  {/* Email */}
-  <div>
-    <label className="block text-sm font-semibold text-blue-900 mb-1">
-      Email <span className="text-red-600">*</span>
-    </label>
-
-    <div className="relative">
-      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-700" size={18} />
-      <div className="absolute left-11 top-2 bottom-2 w-px bg-gray-300"></div>
-
-      <input
-        type="email"
-        className="w-full px-4 py-3 pl-16 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
-        placeholder="Enter your email"
-      />
-    </div>
-  </div>
-
-  {/* Contact Number */}
-<div>
-  <label className="block text-sm font-semibold text-blue-900 mb-1">
-    Contact Number <span className="text-red-600">*</span>
-  </label>
-
-  <div className="flex gap-4">
-
-    {/* Area Code */}
-    <div className="relative w-32">
-      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-700" size={18} />
-      <div className="absolute left-11 top-2 bottom-2 w-px bg-gray-300"></div>
-
-      <input
-        type="text"
-        className="w-full px-1 py-3 pl-16 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
-        placeholder="e.g. +63"
-      />
-    </div>
-
-    {/* Mobile Number */}
-    <div className="relative flex-1">
-      <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-700" size={18} />
-      <div className="absolute left-11 top-2 bottom-2 w-px bg-gray-300"></div>
-
-      <input
-        type="text"
-        className="w-full px-4 py-3 pl-16 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
-        placeholder="Enter mobile number"
-      />
-    </div>
-
-  </div>
-</div>
-
-
-  {/* Subject */}
-  <div>
-    <label className="block text-sm font-semibold text-blue-900 mb-1">
-      Topic of your inquiry <span className="text-red-600">*</span>
-    </label>
-
-    <div className="relative">
-      <FileText className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-700" size={18} />
-      <div className="absolute left-11 top-2 bottom-2 w-px bg-gray-300"></div>
-
-      <input
-        type="text"
-        className="w-full px-4 py-3 pl-16 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
-        placeholder="Enter topic of your inquiry"
-      />
-    </div>
-  </div>
-
-  {/* Message */}
-  <div>
-    <label className="block text-sm font-semibold text-blue-900 mb-1">
-      Let us know of your concern <span className="text-red-600">*</span>
-    </label>
-
-    <div className="relative">
-      <MessageSquare className="absolute left-4 top-4 text-blue-700" size={18} />
-      <div className="absolute left-11 top-3 bottom-3 w-px bg-gray-300"></div>
-
-      <textarea
-        className="w-full px-4 py-3 pl-16 rounded-lg border border-gray-300 h-32 resize-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500 outline-none"
-        placeholder="Write your message..."
-      ></textarea>
-    </div>
-  </div>
-
-  {/* Submit */}
-  <button
-    type="submit"
-    className="w-full bg-blue-900 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-800 transition-all shadow-md"
-  >
-    Send Message
-  </button>
-</form>
-
-  </div>
-</div>
-
-
-
     </div>
   );
 }

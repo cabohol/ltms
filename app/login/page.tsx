@@ -7,15 +7,54 @@ import { User, Lock, Eye, EyeOff, Globe, GraduationCap, Phone, UserPlus, LogIn, 
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isELearningOpen, setIsELearningOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+
+  // Email validation
+  const validateEmail = (value: string) => {
+    if (!value.trim()) {
+      setEmailError("Email is required");
+    } else if (!value.includes("@")) {
+      setEmailError("Email must contain '@'");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  // Password validation
+  const validatePassword = (value: string) => {
+    if (!value.trim()) {
+      setPasswordError("Password is required");
+    } else if (value.length < 6) {
+      setPasswordError("Password must be at least 6 characters");
+    } else {
+      setPasswordError("");
+    }
+  };
 
   const handleSubmit = () => {
+    // Validate email and password
+    validateEmail(email);
+    validatePassword(password);
+
+    if (!email || !password || emailError || passwordError) {
+      setAlertMessage("Please provide your login credentials.");
+      setShowAlert(true);
+      return;
+    }
+    // If valid
+    setShowAlert(false);
     console.log("Login attempt:", { email, password, rememberMe });
   };
+
+
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -26,12 +65,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div
-      className="min-h-screen bg-cover bg-center bg-no-repeat relative"
-      style={{ backgroundImage: "url('/mechanic.jpeg')" }}
-    >
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/mechanic.jpeg')" }}>
     <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>
-
       {/* Navigation */}
       <nav className="bg-blue-900/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
         <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -183,7 +218,7 @@ export default function LoginPage() {
                   </div>
                 )}
               </div>              
-              <MobileNavLink icon={<Phone size={18} />} href="#" label="CONTACT" onClick={() => setIsMobileMenuOpen(false)} />
+              <MobileNavLink icon={<Phone size={18} />} href="/contact" label="CONTACT" onClick={() => setIsMobileMenuOpen(false)} />
               <MobileNavLink icon={<UserPlus size={18} />} href="/register" label="REGISTER" onClick={() => setIsMobileMenuOpen(false)} />
               <MobileNavLink icon={<LogIn size={18} />} href="/login" label="LOGIN" onClick={() => setIsMobileMenuOpen(false)} />
             </div>
@@ -191,24 +226,13 @@ export default function LoginPage() {
         </div>
       </nav>
 
-      {/* Login Content - Centered like screenshot */}
+      {/* Login Content */}
       <div className="flex-1 flex items-center justify-center px-4 py-8">
-        {/* Outer blue/gray frame */}
         <div className="w-full max-w-lg rounded-2xl p-6 backdrop-blur-sm shadow-2xl border-4 border-blue-500/50">
-          {/* Inner white card */}
           <div className="bg-white rounded-xl p-10 shadow-xl">
-            {/* Logo */}
             <div className="flex justify-center mb-6">
-              <Image 
-                src="/ltologo.png" 
-                alt="LTO Logo" 
-                width={120} 
-                height={120} 
-                className="object-contain"
-              />
+              <Image src="/ltologo.png" alt="LTO Logo" width={120} height={120} className="object-contain"/>
             </div>
-
-            {/* Title */}
             <h1 className="text-center text-4xl font-bold text-blue-900 mb-2 whitespace-nowrap">
               LTMS PORTAL
             </h1>
@@ -217,22 +241,45 @@ export default function LoginPage() {
               Land Transportation Management System
             </p>
 
+            {showAlert && (
+              <div className="flex items-center justify-between bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md mb-4 animate-fade-in" role="alert">
+                <span>{alertMessage}</span>
+                <button
+                  onClick={() => setShowAlert(false)}
+                  className="ml-4 text-red-700 hover:text-red-900 font-bold"
+                >
+                  &times;
+                </button>
+              </div>
+            )}
+
             {/* Form */}
             <div className="space-y-4">
-            {/* Email Input */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pr-3 border-r border-gray-300">
-                <User className="w-5 h-5 text-gray-500" />
-              </div>
-              <input
-                type="text"
-                placeholder="Email or LTO Client Number"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-gray-300 pl-12 pr-4 py-3 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-800 placeholder-gray-400 text-sm transition-all bg-gray-50 focus:bg-white"
-              />
-            </div>
+            {/* Email */}
+            <div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pr-3 border-r border-gray-300">
+                  <User className="w-5 h-5 text-gray-500" />
+                </div>
 
+                <input
+                  type="text"
+                  placeholder="Email or LTO Client Number"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    validateEmail(e.target.value);
+                  }}
+                  className={`w-full border ${
+                    emailError ? "border-red-500" : "border-gray-300"
+                  } pl-12 pr-4 py-3 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-800 placeholder-gray-400 text-sm transition-all bg-gray-50 focus:bg-white`}
+                />
+              </div>
+
+              {emailError && (
+                <p className="text-red-600 text-sm mt-1">{emailError}</p>
+              )}
+            </div>
             {/* Password Input */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pr-3 border-r border-gray-300">
@@ -243,22 +290,20 @@ export default function LoginPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-300 pl-12 pr-12 py-3 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-800 placeholder-gray-400 text-sm transition-all bg-gray-50 focus:bg-white"
+                className={`w-full border ${
+                  passwordError ? "border-red-500" : "border-gray-300"
+                } pl-12 pr-12 py-3 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-800 placeholder-gray-400 text-sm transition-all bg-gray-50 focus:bg-white`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
               >
-                {showPassword ? (
-                  <EyeOff className="w-5 h-5" />
-                ) : (
-                  <Eye className="w-5 h-5" />
-                )}
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
-
-              {/* Remember & Forgot */}
+            {passwordError && <p className="text-red-600 text-sm mt-1">{passwordError}</p>}
+           {/* Remember & Forgot */}
            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pt-2 space-y-2 sm:space-y-0">
             <label className="flex items-center gap-2 cursor-pointer order-1 sm:order-none">
               <input
@@ -275,16 +320,16 @@ export default function LoginPage() {
             >
               Forgot Password
             </a>
-          </div>
+           </div>
 
+          {/* Sign In Button */}
+          <button onClick={handleSubmit}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-md transition-all duration-200 shadow-md hover:shadow-lg text-base mt-4 flex items-center justify-center gap-2"
+          >
+            <LogIn className="w-5 h-5" />
+            Sign In
+          </button>
 
-              {/* Sign In Button */}
-              <button
-                onClick={handleSubmit}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-md transition-all duration-200 shadow-md hover:shadow-lg text-base mt-4"
-              >
-                Sign In
-              </button>
             </div>
           </div>
         </div>

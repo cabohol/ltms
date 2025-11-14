@@ -43,7 +43,7 @@ export default function LTMSPortal() {
               </span>
             </div>
 
-            {/* Navigation Links - Center */}
+            {/* Navigation Links */}
             <div className="hidden md:flex items-center justify-center flex-1 gap-8">
               <NavLink icon={<Globe size={18} />} href="https://lto.gov.ph/" label="LTO OFFICIAL WEBPAGE" />
               <div className="relative">
@@ -203,9 +203,9 @@ export default function LTMSPortal() {
                   </div>
                 )}
               </div>              
-              <MobileNavLink icon={<Phone size={18} />} href="#" label="CONTACT" onClick={() => setIsMobileMenuOpen(false)} />
-              <MobileNavLink icon={<UserPlus size={18} />} href="#" label="REGISTER" onClick={() => setIsMobileMenuOpen(false)} />
-              <MobileNavLink icon={<LogIn size={18} />} href="#" label="LOGIN" onClick={() => setIsMobileMenuOpen(false)} />
+              <MobileNavLink icon={<Phone size={18} />} href="/contact" label="CONTACT" onClick={() => setIsMobileMenuOpen(false)} />
+              <MobileNavLink icon={<UserPlus size={18} />} href="/register" label="REGISTER" onClick={() => setIsMobileMenuOpen(false)} />
+              <MobileNavLink icon={<LogIn size={18} />} href="/login" label="LOGIN" onClick={() => setIsMobileMenuOpen(false)} />
             </div>
           )}
         </div>
