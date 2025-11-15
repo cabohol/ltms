@@ -230,15 +230,15 @@ export default function LTMSPortal() {
 
             {/* LTO Logo */}
             <div className="flex justify-center">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Land_Transportation_Office.svg/1200px-Land_Transportation_Office.svg.png" alt="" className="w-50 mb-6" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Land_Transportation_Office.svg/1200px-Land_Transportation_Office.svg.png" alt="" className="w-50 mb-6 animate-in fade-in slide-in-from-top duration-1000" />
             </div>
 
             {/* LTMS PORTAL Text */}
-            <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight drop-shadow-2xl -mt-8">
+            <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight drop-shadow-2xl -mt-8 animate-in fade-in slide-in-from-top duration-1000">
               LTMS PORTAL
             </h2>
 
-            <p className="max-w-4xl mx-auto text-lg sm:text-xl lg:text-2xl text-white font-medium leading-relaxed drop-shadow-lg px-4 -mt-5">
+            <p className="max-w-4xl mx-auto text-lg sm:text-xl lg:text-2xl text-white font-medium leading-relaxed drop-shadow-lg px-4 -mt-5 animate-in fade-in slide-in-from-top duration-1000">
               A front line government agency showcasing fast and efficient public service 
               for a progressive land transport sector
             </p>

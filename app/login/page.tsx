@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import { User, Lock, Eye, EyeOff, Globe, GraduationCap, Phone, UserPlus, LogIn, Menu, X } from 'lucide-react';
 
 export default function LoginPage() {
@@ -17,44 +18,47 @@ export default function LoginPage() {
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
+
+  const router = useRouter(); // Call hook at the TOP of component
+
+ 
   // Email validation
-  const validateEmail = (value: string) => {
-    if (!value.trim()) {
-      setEmailError("Email is required");
-    } else if (!value.includes("@")) {
-      setEmailError("Email must contain '@'");
-    } else {
-      setEmailError("");
-    }
-  };
+const validateEmail = (value: string) => {
+  if (!value.trim()) {
+    setEmailError("Email is required");
+  } else if (!value.includes("@")) {
+    setEmailError("Email must contain '@'");
+  } else if (value !== "juandelacruz@gmail.com") {
+    setEmailError("Invalid email address");
+  } else {
+    setEmailError("");
+  }
+};
 
-  // Password validation
-  const validatePassword = (value: string) => {
-    if (!value.trim()) {
-      setPasswordError("Password is required");
-    } else if (value.length < 6) {
-      setPasswordError("Password must be at least 6 characters");
-    } else {
-      setPasswordError("");
-    }
-  };
+// Password validation
+const validatePassword = (value: string) => {
+  if (!value.trim()) {
+    setPasswordError("Password is required");
+  } else if (value.length < 6) {
+    setPasswordError("Password must be at least 6 characters");
+  } else if (value !== "juandelacruz") {
+    setPasswordError("Incorrect password");
+  } else {
+    setPasswordError("");
+  }
+};
 
-  const handleSubmit = () => {
-    // Validate email and password
-    validateEmail(email);
-    validatePassword(password);
-
-    if (!email || !password || emailError || passwordError) {
-      setAlertMessage("Please provide your login credentials.");
-      setShowAlert(true);
-      return;
-    }
-    // If valid
-    setShowAlert(false);
-    console.log("Login attempt:", { email, password, rememberMe });
-  };
-
-
+// REPLACE your existing handleSubmit with this:
+const handleSubmit = () => {
+  // Validate both fields
+  validateEmail(email);
+  validatePassword(password);
+  
+  // Only redirect if both are correct
+  if (email === "juandelacruz@gmail.com" && password === "juandelacruz" && !emailError && !passwordError) {
+    router.push('/dashboard');
+  }
+};
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -341,12 +345,12 @@ export default function LoginPage() {
             </a>
            </div>
 
-          {/* Sign In Button */}
+          {/* Log In Button */}
           <button onClick={handleSubmit}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-md transition-all duration-200 shadow-md hover:shadow-lg text-base mt-4 flex items-center justify-center gap-2"
           >
             <LogIn className="w-5 h-5" />
-            Sign In
+            Log In
           </button>
 
             </div>
