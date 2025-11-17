@@ -30,8 +30,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/mechanic.jpeg')" }}>
-      <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>
-      
+      <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>   
       {/* Navigation */}
       <nav className="relative bg-blue-900/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
         <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -165,11 +164,19 @@ export default function DashboardPage() {
                     <div className="h-1 bg-gradient-to-r from-red-600 to-red-500"></div>
                     
                     <div className="py-2">
-                      <div className="px-4 py-3 border-b border-white/10">
+                    <div className="px-4 py-3 border-b border-white/10 flex items-center gap-3">
+                      <img 
+                        src="https://www.citypng.com/public/uploads/preview/png-round-blue-contact-user-profile-icon-701751694975293fcgzulxp2k.png"
+                        alt="User Avatar"
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+
+                      <div>
                         <p className="text-white font-semibold text-sm">{userName}</p>
                         <p className="text-blue-300 text-xs mt-1">{userClientId}</p>
                       </div>
-                      
+                    </div>
+               
                       <a
                         href="/login"
                         className="group flex items-center gap-3 px-4 py-3 text-white font-semibold text-sm rounded-lg hover:bg-blue-800/60 active:bg-blue-700/80 transition-all duration-200 hover:translate-x-1 focus:outline-none focus:ring-2 focus:ring-white/50 m-2"
@@ -258,9 +265,59 @@ export default function DashboardPage() {
               
               <MobileNavLink icon={<Phone size={18} />} href="/contact" label="CONTACT" onClick={() => setIsMobileMenuOpen(false)} />
               <MobileNavLink icon={<Home size={18} />} href="/dashboard" label="DASHBOARD" onClick={() => setIsMobileMenuOpen(false)} />
-              <div className="flex items-center gap-3 px-4 py-3 text-white font-semibold text-sm">
-                <User size={18} />
-                <span className="text-xs">{userClientId}</span>
+              <div className="relative">
+                {/* NAV BUTTON — icon + ID + arrow only */}
+                <button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="w-full flex items-center justify-between gap-3 px-4 py-3 text-white font-semibold text-sm rounded-lg hover:bg-white/10 active:bg-white/20 transition-all duration-200"
+                >
+                  <div className="flex items-center gap-3">
+                    <User size={18} />
+                    <span className="text-xs">{userClientId}</span>
+                  </div>
+
+                  {/* Arrow (same position as E-Learning) */}
+                  <svg 
+                    className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpen ? "rotate-180" : ""}`} 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {/* DROPDOWN MENU — avatar goes here */}
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-64 bg-blue-900/98 backdrop-blur-md rounded-xl shadow-2xl border border-blue-400/30 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="h-1 bg-gradient-to-r from-red-600 to-red-500"></div>
+
+                    {/* Avatar + user info */}
+                    <div className="px-4 py-3 border-b border-white/10 flex items-center gap-3">
+                      <img 
+                        src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740&q=80"
+                        alt="User Avatar"
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+
+                      <div>
+                        <p className="text-white font-semibold text-sm">{userName}</p>
+                        <p className="text-blue-300 text-xs mt-1">{userClientId}</p>
+                      </div>
+                    </div>
+
+                    {/* Logout */}
+                    <a
+                      href="/login"
+                      className="group flex items-center gap-3 px-4 py-3 text-white font-semibold text-sm hover:bg-blue-800/60 active:bg-blue-700/80 transition-all duration-200"
+                    >
+                      <svg className="w-5 h-5 text-red-400 group-hover:text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      <span>Logout</span>
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -294,60 +351,76 @@ export default function DashboardPage() {
 
      
           {/* Dashboard Modules Grid */}
-<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4 sm:gap-6 mb-8">
-  {modules.map((module) => (
-    <button
-      key={module.id}
-      onClick={() => console.log(module.id)}
-      className={`group relative isolate bg-white/95 hover:bg-white backdrop-blur-sm rounded-2xl p-6 transition-all duration-300 focus:outline-none shadow-xl overflow-hidden hover:ring-4 hover:ring-red-500 hover:z-10 animate-in fade-in zoom-in duration-1000 ${
-        module.highlighted ? 'ring-4 ring-red-500' : ''
-      }`}
-      style={{
-        transform: 'translateZ(0)' // Creates new stacking context
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'scale(1.05) translateY(-4px) translateZ(0)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'scale(1) translateY(0) translateZ(0)';
-      }}
-      aria-label={`${module.name}: ${module.description}`}
-    >
-      {/* Icon */}
-      <div className="flex justify-center mb-4 text-blue-900 transition-all duration-300 group-hover:mb-2 group-hover:scale-110">
-        {module.icon}
-      </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4 sm:gap-6 mb-8">
+           {modules.map((module, index) => (
+            <button
+              key={module.id}
+              className={`
+                group relative isolate 
+                bg-white/95 hover:bg-white 
+                backdrop-blur-sm rounded-2xl 
+                p-6 transition-all duration-300 
+                focus:outline-none shadow-xl overflow-hidden 
+                hover:ring-4 hover:ring-red-500 hover:z-10
+                ${module.highlighted ? 'ring-4 ring-red-500' : ''}
 
-      {/* Module Name */}
-      <h3 className="text-blue-900 font-bold text-sm sm:text-base text-center leading-tight mb-2">
-        {module.name}
-      </h3>
+                /* Only center last item on mobile */
+                ${index === modules.length - 1 ? 'col-span-2 mx-auto sm:col-span-1 sm:mx-0' : ''}
+              `}
+            >
+              {/* Icon */}
+              <div className="flex justify-center mb-4 text-blue-900 transition-all duration-300 group-hover:mb-2 group-hover:scale-110">
+                {module.icon}
+              </div>
 
-      {/* Description */}
-      <div className="max-h-0 opacity-0 transition-all duration-300 overflow-hidden group-hover:max-h-20 group-hover:opacity-100">
-        <p className="text-blue-700 text-xs text-center leading-snug mt-2">
-          {module.description}
-        </p>
-      </div>
-    </button>
-  ))}
-</div>
+              {/* Module Name */}
+              <h3 className="text-blue-900 font-bold text-sm sm:text-base text-center leading-tight mb-2">
+                {module.name}
+              </h3>
+
+              {/* Description */}
+              <div className="max-h-0 opacity-0 transition-all duration-300 overflow-hidden group-hover:max-h-20 group-hover:opacity-100">
+                <p className="text-blue-700 text-xs text-center leading-snug mt-2">
+                  {module.description}
+                </p>
+              </div>
+            </button>
+          ))}
+          </div>
 
           {/* Footer Info */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-8">
-            <div className="flex items-center gap-3 bg-white/95 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-white shadow-lg">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" aria-hidden="true"></div>
-              <span className="text-blue-900 font-bold text-sm sm:text-base">Release 2.5.4</span>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-9">
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-white/20 w-full sm:w-auto max-w-[280px] sm:max-w-none">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse flex-shrink-0"></div>
+              <span className="font-semibold text-xs sm:text-sm md:text-base text-white">Release 2.5.4</span>
             </div>
           </div>
         </div>
 
-        {/* Bottom Branding */}
-        <div className="absolute bottom-8 right-8 opacity-90 hidden lg:block">
-          <div className="bg-white/95 backdrop-blur-sm px-6 py-3 rounded-xl border-2 border-white shadow-xl">
-            <p className="text-blue-900 text-sm font-bold">Management Information Division</p>
+      {/* MID Badge */}
+      <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-auto right-4 sm:right-6 md:right-8">
+        <div className="bg-blue-800/95 backdrop-blur-sm px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-lg border border-blue-400/40 shadow-xl flex items-center gap-2 sm:gap-3 justify-center sm:justify-start">
+          
+          {/* Logo */}
+          <Image 
+            src="/ltologo.png" 
+            alt="LTO Logo" 
+            width={48} 
+            height={48} 
+            className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain flex-shrink-0"
+          />
+          
+          {/* Text */}
+          <div className="flex flex-col items-center sm:items-start">
+            <span className="text-white font-bold text-[10px] sm:text-xs md:text-sm tracking-wide leading-tight text-center sm:text-left">
+              MANAGEMENT INFORMATION
+            </span>
+            <span className="text-blue-200 font-semibold text-[9px] sm:text-[10px] md:text-xs tracking-wider leading-tight text-center sm:text-left">
+              DIVISION (MID)
+            </span>
           </div>
         </div>
+      </div>
       </main>
 
       {/* Success Alert - Shown after login */}
