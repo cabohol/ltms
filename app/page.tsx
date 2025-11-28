@@ -20,7 +20,7 @@ export default function LTMSPortal() {
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat relative"
       style={{
-        backgroundImage: "url('/manila-traffic.jpg')", 
+        backgroundImage: "url('/bgpic.jpg')", 
       }}
     >
       <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>

@@ -69,7 +69,7 @@ const handleSubmit = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/mechanic.jpeg')" }}>
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/bgpic.jpg')" }}>
     <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>
       {/* Navigation */}
       <nav className="bg-blue-900/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
