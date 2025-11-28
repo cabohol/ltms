@@ -244,19 +244,22 @@ export default function LTMSPortal() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-              <a href="/register" className="group relative px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold text-lg rounded-lg shadow-2xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-500/50 w-full sm:w-auto block text-center">
+              <a href="/register" className="group relative px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg rounded-lg shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-500/50 w-full sm:w-auto block text-center">
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   <UserPlus size={24} />
                   REGISTER NOW
                 </span>
               </a>
               
-            <a href="/login"
-              className="group relative px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold text-lg rounded-lg border-2 border-white shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/50 w-full sm:w-auto"
-            >
+              <a href="/login"
+              className="group relative px-8 py-4 bg-white text-blue-700 font-semibold text-lg rounded-xl border-2 border-blue-700 
+                        shadow-sm hover:bg-blue-50 
+                        transition-all duration-300 hover:scale-[1.03]
+                        focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 
+                        w-full sm:w-auto block text-center">
               <span className="relative z-10 flex items-center justify-center gap-2">
-                <LogIn size={24} />
-                LOG IN
+                <LogIn size={24} aria-hidden="true" />
+                <span>Log In</span>
               </span>
             </a>
             </div>
