@@ -265,6 +265,7 @@ export default function DashboardPage() {
               
               <MobileNavLink icon={<Phone size={18} />} href="/contact" label="CONTACT" onClick={() => setIsMobileMenuOpen(false)} />
               <MobileNavLink icon={<Home size={18} />} href="/dashboard" label="DASHBOARD" onClick={() => setIsMobileMenuOpen(false)} />
+              
               <div className="relative">
                 {/* NAV BUTTON — icon + ID + arrow only */}
                 <button
@@ -352,40 +353,76 @@ export default function DashboardPage() {
      
           {/* Dashboard Modules Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4 sm:gap-6 mb-8">
-           {modules.map((module, index) => (
-            <button
-              key={module.id}
-              className={`
-                group relative isolate 
-                bg-white/95 hover:bg-white 
-                backdrop-blur-sm rounded-2xl 
-                p-6 transition-all duration-300 
-                focus:outline-none shadow-xl overflow-hidden 
-                hover:ring-4 hover:ring-red-500 hover:z-10
-                ${module.highlighted ? 'ring-4 ring-red-500' : ''}
+           {modules.map((module, index) => {
+            // Check if this is the profile module
+            if (module.id === 'profile') {
+              return (
+                <Link
+                  key={module.id}
+                  href="/profile"
+                  className={`
+                    group relative isolate 
+                    bg-white/95 hover:bg-white 
+                    backdrop-blur-sm rounded-2xl 
+                    p-6 transition-all duration-300 
+                    focus:outline-none shadow-xl overflow-hidden 
+                    hover:ring-4 hover:ring-red-500 hover:z-10
+                    ${index === modules.length - 1 ? 'col-span-2 mx-auto sm:col-span-1 sm:mx-0' : ''}
+                  `}
+                >
+                  {/* Icon */}
+                  <div className="flex justify-center mb-4 text-blue-900 transition-all duration-300 group-hover:mb-2 group-hover:scale-110">
+                    {module.icon}
+                  </div>
 
-                /* Only center last item on mobile */
-                ${index === modules.length - 1 ? 'col-span-2 mx-auto sm:col-span-1 sm:mx-0' : ''}
-              `}
-            >
-              {/* Icon */}
-              <div className="flex justify-center mb-4 text-blue-900 transition-all duration-300 group-hover:mb-2 group-hover:scale-110">
-                {module.icon}
-              </div>
+                  {/* Module Name */}
+                  <h3 className="text-blue-900 font-bold text-sm sm:text-base text-center leading-tight mb-2">
+                    {module.name}
+                  </h3>
 
-              {/* Module Name */}
-              <h3 className="text-blue-900 font-bold text-sm sm:text-base text-center leading-tight mb-2">
-                {module.name}
-              </h3>
+                  {/* Description */}
+                  <div className="max-h-0 opacity-0 transition-all duration-300 overflow-hidden group-hover:max-h-20 group-hover:opacity-100">
+                    <p className="text-blue-700 text-xs text-center leading-snug mt-2">
+                      {module.description}
+                    </p>
+                  </div>
+                </Link>
+              );
+            }
 
-              {/* Description */}
-              <div className="max-h-0 opacity-0 transition-all duration-300 overflow-hidden group-hover:max-h-20 group-hover:opacity-100">
-                <p className="text-blue-700 text-xs text-center leading-snug mt-2">
-                  {module.description}
-                </p>
-              </div>
-            </button>
-          ))}
+            // Other modules remain as buttons
+            return (
+              <button
+                key={module.id}
+                className={`
+                  group relative isolate 
+                  bg-white/95 hover:bg-white 
+                  backdrop-blur-sm rounded-2xl 
+                  p-6 transition-all duration-300 
+                  focus:outline-none shadow-xl overflow-hidden 
+                  hover:ring-4 hover:ring-red-500 hover:z-10
+                  ${index === modules.length - 1 ? 'col-span-2 mx-auto sm:col-span-1 sm:mx-0' : ''}
+                `}
+              >
+                {/* Icon */}
+                <div className="flex justify-center mb-4 text-blue-900 transition-all duration-300 group-hover:mb-2 group-hover:scale-110">
+                  {module.icon}
+                </div>
+
+                {/* Module Name */}
+                <h3 className="text-blue-900 font-bold text-sm sm:text-base text-center leading-tight mb-2">
+                  {module.name}
+                </h3>
+
+                {/* Description */}
+                <div className="max-h-0 opacity-0 transition-all duration-300 overflow-hidden group-hover:max-h-20 group-hover:opacity-100">
+                  <p className="text-blue-700 text-xs text-center leading-snug mt-2">
+                    {module.description}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
           </div>
 
           {/* Footer Info */}

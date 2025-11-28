@@ -29,6 +29,7 @@ const validateEmail = (value: string) => {
   } else if (!value.includes("@")) {
     setEmailError("Email must contain '@'");
   } else if (value !== "juandelacruz@gmail.com") {
+    
     setEmailError("Invalid email address");
   } else {
     setEmailError("");
