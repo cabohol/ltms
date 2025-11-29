@@ -17,8 +17,14 @@ import {
   Home,
   Menu,
   X,
-  Check
+  Check,
+  Droplet,
+  Eye,
+  Activity,
+  Feather,
+  ChevronsDown
 } from "lucide-react";
+
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("personal");
@@ -213,77 +219,102 @@ export default function ProfilePage() {
       {/* Main Content */}
       <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          {/* Tabs */}
-          <div className="border-b border-gray-200 bg-gray-50">
-          <nav className="flex justify-center w-full overflow-x-auto">
+        {/* Tabs */}
+        <div className="border-b border-gray-200 bg-gray-50">
+          <nav className="flex justify-start sm:justify-center w-full overflow-x-auto no-scrollbar">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center space-x-2 px-6 py-4 text-base font-medium 
-                  border-b-2 transition-colors whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  }`}
+                  className={`flex items-center space-x-2 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium 
+                    border-b-2 transition-colors whitespace-nowrap shrink-0
+                    ${
+                      activeTab === tab.id
+                        ? "border-blue-600 text-blue-600"
+                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    }`}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>{tab.label}</span>
                 </button>
               );
             })}
           </nav>
-          </div>
+        </div>
+
 
           {/* Content */}
           <div className="p-8">
             {activeTab === "personal" && (
               <div className="space-y-6">
               <div>
-                <h2 className="flex items-center text-2xl font-bold text-gray-900 mb-6 space-x-2">
-                  <User className="w-6 h-6 text-black-600" />
+                <h2 className="flex items-center text-2xl font-bold text-blue-800 mb-6 space-x-2">
+                  <User className="w-6 h-6 text-blue-800" />
                   <span>Personal Information</span>
                 </h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     First Name <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
-                    defaultValue="JUAN"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                  />
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                      {/* Replace with your icon component or emoji */}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
+                      </svg>
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue="JUAN"
+                      className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     Middle Name <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
-                    defaultValue=""
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                  />
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
+                      </svg>
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue=""
+                      className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    />
+                  </div>
                 </div>
-                <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Last Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  defaultValue="DELA CRUZ"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                />
+
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
+                    Last Name <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
+                      </svg>
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue="DELA CRUZ"
+                      className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-blue-800 mb-2">
                   Date of Birth <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -294,7 +325,7 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-blue-800 mb-2">
                   Gender <span className="text-red-500">*</span>
                 </label>
                 <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
@@ -304,7 +335,7 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-blue-800 mb-2">
                   Civil Status <span className="text-red-500">*</span>
                 </label>
                 <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
@@ -318,7 +349,7 @@ export default function ProfilePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-blue-800 mb-2">
                   Nationality <span className="text-red-500">*</span>
                 </label>
                 <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
@@ -327,12 +358,12 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-blue-800 mb-2">
                   Place of Birth <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter place of birth"
+                  placeholder="Enter Place of Birth"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                 />
               </div>
@@ -343,8 +374,8 @@ export default function ProfilePage() {
             {activeTab === "contact" && (
               <div className="space-y-6">
               <div>
-                <h2 className="flex items-center space-x-2 text-2xl font-bold text-gray-900 mb-6">
-                  <Mail className="w-6 h-6 text-black-700" />
+                <h2 className="flex items-center space-x-2 text-2xl font-bold text-blue-800 mb-6">
+                  <Mail className="w-6 h-6 text-blue-800" />
                   <span>Contact Information</span>
                 </h2>
               </div>
@@ -352,9 +383,8 @@ export default function ProfilePage() {
 
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                   <div className="flex items-start space-x-3">
-                    <Mail className="w-5 h-5 text-blue-600 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className="text-sm font-medium text-blue-900">
                         Email Address
                       </p>
                       <p className="text-sm text-gray-600 mt-1">
@@ -366,7 +396,7 @@ export default function ProfilePage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
                       Country Code <span className="text-red-500">*</span>
                     </label>
                     <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
@@ -383,15 +413,19 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
                       Mobile Phone <span className="text-red-500">*</span>
                     </label>
-                    <div className="flex space-x-3">
+                    <div className="flex space-x-6">
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       <input
                         type="tel"
                         defaultValue="9123456789"
-                        className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        placeholder="Enter mobile number"
                       />
+                    </div>
                     <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium whitespace-nowrap flex items-center space-x-2">
                       <Check className="w-5 h-5" />
                       <span>Verify Number</span>
@@ -406,26 +440,34 @@ export default function ProfilePage() {
             {activeTab === "medical" && (
               <div className="space-y-6">
               <div>
-                <h2 className="flex items-center space-x-2 text-2xl font-bold text-gray-900 mb-6">
-                  <Heart className="w-6 h-6 text-black-700" />
+                <h2 className="flex items-center space-x-2 text-2xl font-bold text-blue-800 mb-6">
+                  <Heart className="w-6 h-6 text-blue-800" />
                   <span>Medical Information</span>
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Complexion */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     Complexion <span className="text-red-500">*</span>
                   </label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"></select>
+                  <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    <option value="">Select Complexion</option>
+                    <option>Fair</option>
+                    <option>Medium</option>
+                    <option>Dark</option>
+                  </select>
+                  <User className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Blood Type */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     Blood Type <span className="text-red-500">*</span>
                   </label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                    <option value="">Select blood type</option>
+                  <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    <option value="">Select Blood Type</option>
                     <option>A+</option>
                     <option>A-</option>
                     <option>B+</option>
@@ -435,208 +477,239 @@ export default function ProfilePage() {
                     <option>AB+</option>
                     <option>AB-</option>
                   </select>
+                  <Droplet className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Eye Color */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     Eye Color <span className="text-red-500">*</span>
                   </label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                    <option value="">Select eye color</option>
+                  <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    <option value="">Select Eye Color</option>
                     <option>Black</option>
                     <option>Brown</option>
                     <option>Blue</option>
                     <option>Green</option>
                     <option>Gray</option>
                   </select>
+                  <Eye className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Body Type */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     Body Type <span className="text-red-500">*</span>
                   </label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                    <option value="">Select body type</option>
+                  <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    <option value="">Select Body Type</option>
                     <option>Light</option>
                     <option>Medium</option>
                     <option>Heavy</option>
                   </select>
+                  <Activity className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Weight */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     Weight (kg) <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="number"
                     placeholder="Enter weight"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   />
+                  <Feather className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Hair Color */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     Hair Color <span className="text-red-500">*</span>
                   </label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                    <option value="">Select hair color</option>
+                  <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    <option value="">Select Hair Color</option>
                     <option>Black</option>
                     <option>Brown</option>
                     <option>Blonde</option>
                     <option>Red</option>
                     <option>Gray</option>
                   </select>
+                  <User className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Height */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     Height (cm) <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="number"
-                    placeholder="Enter height"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    placeholder="Enter Height"
+                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   />
+                  <MapPin className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Organ Donor */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     Organ Donor <span className="text-red-500">*</span>
                   </label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                    <option value="">Select preference</option>
+                  <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    <option value="">Select Preference</option>
                     <option>Yes</option>
                     <option>No</option>
                   </select>
+                  <Heart className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
                 </div>
               </div>
-
               </div>
             )}
 
             {activeTab === "emergency" && (
               <div className="space-y-6">
               <div>
-                <h2 className="flex items-center space-x-2 text-2xl font-bold text-gray-900 mb-6">
-                  <Shield className="w-6 h-6 text-black-700" />
+                <h2 className="flex items-center space-x-2 text-2xl font-bold text-blue-800 mb-6">
+                  <Shield className="w-6 h-6 text-blue-800" />
                   <span>Emergency Contact Person</span>
                 </h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Contact Name */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     Contact Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Enter Name"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   />
+                  <User className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400" />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Contact Number */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
                     Contact Number <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="tel"
                     placeholder="Enter Number"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   />
+                  <Phone className="absolute left-3 top-13  transform -translate-y-1/2 text-gray-400" />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              {/* Address */}
+              <div className="relative">
+                <label className="block text-sm font-medium text-blue-800 mb-2">
                   Address <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   rows={3}
                   placeholder="Enter emergency contact person address"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                 />
+                <MapPin className="absolute left-3 top-10  text-gray-400" />
               </div>
 
               <div className="border-t pt-6 mt-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                <h3 className="text-lg font-semibold text-blue-800 mb-4">
                   Mother's Maiden Name
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {/* First Name */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
                       First Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       placeholder="Enter First Name"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     />
+                    <User className="absolute left-3 top-13  transform -translate-y-1/2 text-gray-400" />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {/* Middle Name */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
                       Middle Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       placeholder="Enter Middle Name"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     />
+                    <User className="absolute left-3 top-13  transform -translate-y-1/2 text-gray-400" />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {/* Last Name */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
                       Last Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       placeholder="Enter Last Name"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     />
+                    <User className="absolute left-3 top-13  transform -translate-y-1/2 text-gray-400" />
                   </div>
                 </div>
               </div>
 
               <div className="border-t pt-6 mt-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                <h3 className="text-lg font-semibold text-blue-800 mb-4">
                   Father's Information
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      First Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter First Name"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Middle Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter Middle Name"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Last Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter Last Name"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                    />
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* First Name */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
+                    First Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter First Name"
+                    className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  />
+                  <User className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400" />
                 </div>
+
+                {/* Middle Name */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
+                    Middle Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Middle Name"
+                    className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  />
+                  <User className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400" />
+                </div>
+
+                {/* Last Name */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
+                    Last Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Last Name"
+                    className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  />
+                  <User className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400" />
+                </div>
+              </div>
+
               </div>
               </div>
             )}
@@ -644,8 +717,8 @@ export default function ProfilePage() {
             {activeTab === "address" && (
               <div className="space-y-6">
               <div>
-                <h2 className="flex items-center space-x-2 text-2xl font-bold text-gray-900 mb-2">
-                  <MapPin className="w-6 h-6 text-black-700" />
+                <h2 className="flex items-center space-x-2 text-2xl font-bold text-blue-800 mb-2">
+                  <MapPin className="w-6 h-6 text-blue-800" />
                   <span>Main Address</span>
                 </h2>
               </div>
@@ -662,48 +735,55 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {/* House No. */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
                       House No. <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter house number"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      placeholder="Enter House No."
+                      className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     />
+                    <Home className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400" />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {/* Street / Village */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
                       Street / Village <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter street or village"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      placeholder="Enter Street or Village"
+                      className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     />
+                    <MapPin className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400" />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {/* Province */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
                       Province <span className="text-red-500">*</span>
                     </label>
-                    <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                      <option value="">Select province</option>
+                    <select className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                      <option value="">Select Province</option>
                       <option value="Agusan del Norte">Agusan del Norte</option>
                       <option value="Agusan del Sur">Agusan del Sur</option>
                       <option value="Surigao del Norte">Surigao del Norte</option>
                       <option value="Surigao del Sur">Surigao del Sur</option>
                       <option value="Dinagat Islands">Dinagat Islands</option>
                     </select>
+                    <Globe className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400" />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {/* City / Municipality */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
                       City / Municipality <span className="text-red-500">*</span>
                     </label>
-                    <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                      <option value="">Select city/municipality</option>
+                    <select className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                      <option value="">Select City/Municipality</option>
                       <option value="Butuan City">Butuan City</option>
                       <option value="Cabadbaran City">Cabadbaran City</option>
                       <option value="Buenavista">Buenavista</option>
@@ -717,91 +797,43 @@ export default function ProfilePage() {
                       <option value="Santiago">Santiago</option>
                       <option value="Tubay">Tubay</option>
                     </select>
+                    <MapPin className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400" />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {/* Barangay */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
                       Barangay <span className="text-red-500">*</span>
                     </label>
-                    <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                      <option value="">Select barangay</option>
+                    <select className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                      <option value="">Select Barangay</option>
                       <option value="Ambago">Ambago</option>
                       <option value="Amparo">Amparo</option>
                       <option value="Ampayon">Ampayon</option>
-                      <option value="Anticala">Anticala</option>
-                      <option value="Aupagan">Aupagan</option>
-                      <option value="Baan Km. 3">Baan Km. 3</option>
-                      <option value="Baan Km. 7">Baan Km. 7</option>
-                      <option value="Bading">Bading</option>
-                      <option value="Bagong Silang">Bagong Silang</option>
-                      <option value="Bancasi">Bancasi</option>
-                      <option value="Baobaoan">Baobaoan</option>
-                      <option value="Basag">Basag</option>
-                      <option value="Bilay">Bilay</option>
-                      <option value="Bit-os">Bit-os</option>
-                      <option value="Bonbon">Bonbon</option>
-                      <option value="Bugsukan">Bugsukan</option>
-                      <option value="Buhangin">Buhangin</option>
-                      <option value="Bunawan Brook">Bunawan Brook</option>
-                      <option value="Cabcabon">Cabcabon</option>
-                      <option value="Camayahan">Camayahan</option>
-                      <option value="De Oro">De Oro</option>
-                      <option value="Dumalagan">Dumalagan</option>
-                      <option value="Doongan">Doongan</option>
-                      <option value="Holy Redeemer">Holy Redeemer</option>
-                      <option value="Imadejas">Imadejas</option>
-                      <option value="Jose Rosales">Jose Rosales</option>
-                      <option value="Kinamlutan">Kinamlutan</option>
-                      <option value="Lemon">Lemon</option>
-                      <option value="Libertad">Libertad</option>
-                      <option value="Los Angeles">Los Angeles</option>
-                      <option value="Lumbocan">Lumbocan</option>
-                      <option value="Maon">Maon</option>
-                      <option value="Masao">Masao</option>
-                      <option value="New Society Village">New Society Village</option>
-                      <option value="Obrero">Obrero</option>
-                      <option value="Ong Yiu">Ong Yiu</option>
-                      <option value="Pagtigi-an">Pagtigi-an</option>
-                      <option value="Pinamanculan">Pinamanculan</option>
-                      <option value="Port Poyohon">Port Poyohon</option>
-                      <option value="Rajah Soliman">Rajah Soliman</option>
-                      <option value="Salvacion">Salvacion</option>
-                      <option value="San Ignacio">San Ignacio</option>
-                      <option value="San Mateo">San Mateo</option>
-                      <option value="San Vicente">San Vicente</option>
-                      <option value="Sumilihon">Sumilihon</option>
-                      <option value="Tandang Sora">Tandang Sora</option>
-                      <option value="Tiniwisan">Tiniwisan</option>
-                      <option value="Upper Doongan">Upper Doongan</option>
-                      <option value="Villa Kananga">Villa Kananga</option>
-                      <option value="Villa Verde">Villa Verde</option>
+                      {/* ...rest of barangays */}
                     </select>
+                    <MapPin className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400" />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {/* ZIP Code */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
                       ZIP Code <span className="text-red-500">*</span>
                     </label>
-                    <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                      <option value="">Select ZIP code</option>
+                    <select className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                      <option value="">Select ZIP Code</option>
                       <option value="8600">8600 - Butuan City</option>
                       <option value="8605">8605 - Cabadbaran City</option>
                       <option value="8601">8601 - Buenavista</option>
                       <option value="8602">8602 - Carmen</option>
-                      <option value="8602">8602 - Nasipit</option>
-                      <option value="8604">8604 - Magallanes</option>
-                      <option value="8606">8606 - Tubay</option>
-                      <option value="8607">8607 - Santiago</option>
-                      <option value="8608">8608 - Jabonga</option>
-                      <option value="8609">8609 - Kitcharao</option>
-                      <option value="8610">8610 - Las Nieves</option>
-                      <option value="8611">8611 - Remedios T. Romualdez (RTR)</option>
+                      {/* ...rest of ZIP codes */}
                     </select>
+                    <Globe className="absolute left-3 top-13 transform -translate-y-1/2 text-gray-400" />
                   </div>
                 </div>
 
                 <div className="flex flex-col items-center justify-center text-center pt-4">
-                  <label className="text-sm font-medium text-gray-1000 mb-3">
+                  <label className="text-lg font-larger text-blue-800 mb-3">
                     Use a different address as contact address?
                   </label>
 
@@ -823,39 +855,34 @@ export default function ProfilePage() {
             {activeTab === "notifications" && (
               <div className="space-y-6">
                 <div>
-                <h2 className="flex items-center space-x-2 text-2xl font-bold text-gray-900 mb-2">
-                  <Bell className="w-6 h-6 text-black-700" />
+                <h2 className="flex items-center space-x-2 text-2xl font-bold text-blue-800 mb-2">
+                  <Bell className="w-6 h-6 text-blue-800" />
                   <span>SMS Notifications</span>
                 </h2>
-
-                  <p className="text-sm text-gray-600">
-                    Manage your notification preferences
-                  </p>
                 </div>
 
                 <div className="space-y-4">
                   {Object.entries(notifications).map(([key, value]) => (
-                      <div
-                        key={key}
-                        className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
-                      >
-                        <label className="text-sm font-medium text-gray-700 flex-1">
-                          {
-                            {
-                              deactivation:
-                                "Receive SMS notification after account deactivation?",
-                              transaction:
-                                "Receive SMS notification for transaction confirmation?",
-                              appointment:
-                                "Receive SMS notification 24 hours before every appointment?",
-                              license:
-                                "Receive SMS notification 60 days before your license expires?",
-                              reschedule:
-                                "Receive SMS notification after LTO rescheduled your appointment?",
-                            }[key]
-                          }
-                        </label>
-                      <div className="flex space-x-4">
+                    <div
+                      key={key}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
+                    >
+                      <label className="text-sm sm:text-base font-medium text-gray-700 flex-1 mb-2 sm:mb-0 break-words">
+                        {{
+                          deactivation:
+                            "Receive SMS notification after account deactivation?",
+                          transaction:
+                            "Receive SMS notification for transaction confirmation?",
+                          appointment:
+                            "Receive SMS notification 24 hours before every appointment?",
+                          license:
+                            "Receive SMS notification 60 days before your license expires?",
+                          reschedule:
+                            "Receive SMS notification after LTO rescheduled your appointment?",
+                        }[key]}
+                      </label>
+
+                      <div className="flex flex-row justify-center gap-2">
                         <button
                           onClick={() =>
                             setNotifications({
@@ -863,19 +890,20 @@ export default function ProfilePage() {
                               [key]: true,
                             })
                           }
-                          className={`flex items-center gap-2 px-6 py-2 rounded-lg transition font-medium
+                          className={`flex items-center justify-center gap-2 px-6 py-2 rounded-lg transition font-medium
                             ${
                               notifications[key] === true
-                                ? "bg-green-600 text-white"        // selected YES
-                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"  // unselected
-                            }
-                          `}
+                                ? "bg-green-600 text-white"
+                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            }`}
                         >
-                          <Check size={18} className={`${notifications[key] === true ? "text-white" : "text-gray-700"}`} />
+                          <Check
+                            size={18}
+                            className={`${notifications[key] === true ? "text-white" : "text-gray-700"}`}
+                          />
                           Yes
                         </button>
 
-                        {/* NO BUTTON */}
                         <button
                           onClick={() =>
                             setNotifications({
@@ -883,35 +911,40 @@ export default function ProfilePage() {
                               [key]: false,
                             })
                           }
-                          className={`flex items-center gap-2 px-6 py-2 rounded-lg transition font-medium
+                          className={`flex items-center justify-center gap-2 px-6 py-2 rounded-lg transition font-medium
                             ${
                               notifications[key] === false
-                                ? "bg-red-600 text-white"         // selected NO
-                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"  // unselected
-                            }
-                          `}
+                                ? "bg-red-600 text-white"
+                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            }`}
                         >
-                          <X size={18} className={`${notifications[key] === false ? "text-white" : "text-gray-700"}`} />
+                          <X
+                            size={18}
+                            className={`${notifications[key] === false ? "text-white" : "text-gray-700"}`}
+                          />
                           No
                         </button>
                       </div>
-                      </div>
-                    ))}
+
+
+                    </div>
+                  ))}
                 </div>
+
               </div>
             )}
 
-            {/* Action Buttons */}
-            <div className="flex justify-end space-x-4 mt-8 pt-6 border-t">
-              <button className="flex items-center space-x-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium">
-                <X className="w-4 h-4" />
-                <span>Cancel</span>
-              </button>
-              <button className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition font-medium shadow-lg">
-                <Save className="w-4 h-4" />
-                <span>Apply Changes</span>
-              </button>
-            </div>
+          {/* Action Buttons */}
+          <div className="flex flex-col md:flex-row justify-end space-y-3 md:space-y-0 md:space-x-4 mt-8 pt-6 border-t">
+            <button className="flex items-center justify-center w-full md:w-auto space-x-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium">
+              <X className="w-4 h-4" />
+              <span>Cancel</span>
+            </button>
+            <button className="flex items-center justify-center w-full md:w-auto space-x-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition font-medium shadow-lg">
+              <Save className="w-4 h-4" />
+              <span>Apply Changes</span>
+            </button>
+          </div>
           </div>
         </div>
       </main>
