@@ -66,7 +66,7 @@ export default function LTMSPortal() {
                     
                     {/* E-Learning Dropdown */}
                     {isELearningOpen && (
-                      <div className="absolute top-full left-0 mt-2 w-96 bg-blue-900/98 backdrop-blur-md rounded-xl shadow-2xl border border-blue-400/30 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                      <div className="absolute top-full left-0 mt-2 w-96 bg-blue-900/98 backdrop-blur-md rounded-xl shadow-2xl border border-blue-400/30 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-400">
                         {/* Red accent bar at top */}
                         <div className="h-1 bg-gradient-to-r from-red-600 to-red-500"></div>
                         

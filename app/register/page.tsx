@@ -14,7 +14,7 @@ export default function RegisterPage() {
   const router = useRouter();
 
   const disagreeRedirect = () => {
-    router.push("/"); // redirect back to LTMSPortal homepage
+    router.push("/"); 
   };
 
   const enrollmentCards = [
@@ -22,6 +22,7 @@ export default function RegisterPage() {
       title: "Enroll as an Individual",
       icon: <User size={36} className="text-blue-600" />,
       description: "For individuals registering as LTO stakeholders.",
+      link: "/enroll",
     },
     {
       title: "Enroll as an Organization",
@@ -32,11 +33,13 @@ export default function RegisterPage() {
       title: "Maird",
       icon: <Building size={36} className="text-yellow-600" />,
       description: "For MAIRD related registrations.",
+      link: "/enroll",
     },
     {
       title: "Other Entity",
       icon: <FileText size={36} className="text-purple-600" />,
       description: "For other types of entities not covered above.",
+      link: "/enroll",
     },
   ];
 
@@ -72,7 +75,7 @@ export default function RegisterPage() {
 
 
   return (
-    <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/mechanic.jpeg')" }}>
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/bg.jpg')" }}>
       <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>
       {/* Navigation */}
       <nav className="bg-blue-900/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
@@ -339,30 +342,32 @@ export default function RegisterPage() {
       )}
 
       {/* enrollment cards */}
-      {acceptedTerms && (
-        <div className="relative z-10 py-16 px-4 flex justify-center">
-          <div className="w-full max-w-4xl rounded-2xl p-8 backdrop-blur-sm shadow-2xl border-4 border-blue-500/50">
+{acceptedTerms && (
+  <div className="relative z-10 py-16 px-4 flex justify-center">
+    <div className="w-full max-w-4xl rounded-2xl p-8 backdrop-blur-sm shadow-2xl border-4 border-blue-500/50">
 
-            <h2 className="text-2xl sm:text-3xl font-bold text-center text-white mb-10">
-              Enrollment of LTO Stakeholders
-            </h2>
+      <h2 className="text-2xl sm:text-3xl font-bold text-center text-white mb-10">
+       Enrollment of LTO Stakeholders
+      </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {enrollmentCards.map((card, index) => (
-                <div
-                  key={index}
-                  className="bg-white text-blue-900 rounded-xl shadow-lg p-8 flex flex-col items-center text-center hover:scale-105 transition cursor-pointer"
-                >
-                  <div className="mb-4 text-4xl text-blue-500">{card.icon}</div>
-                  <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
-                  <p className="text-blue-600 text-sm">{card.description}</p>
-                </div>
-              ))}
-            </div>
+     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+{enrollmentCards.map((card, index) => (
+  <Link href={card.link || "/enroll"} key={index}>
+    <div
+      className="bg-white text-blue-900 rounded-xl shadow-lg p-8 flex flex-col items-center text-center hover:scale-105 transition cursor-pointer"
+    >
+      <div className="mb-4 text-4xl text-blue-500">{card.icon}</div>
+      <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
+      <p className="text-blue-600 text-sm">{card.description}</p>
+    </div>
+  </Link>
+))}
 
-          </div>
-        </div>
-      )}
+</div>
+
+    </div>
+  </div>
+)}
 
     </div>
   );
