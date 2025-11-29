@@ -1033,28 +1033,32 @@ function QuestionCard({ question, value, onChange, error, required }) {
         <button
           type="button"
           onClick={() => onChange(true)}
-          className={`p-4 rounded-lg border-2 font-medium transition-all flex items-center justify-center gap-2 ${
-            value === true
-              ? 'border-blue-600 bg-blue-50 text-blue-900 ring-2 ring-blue-200'
-              : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
-          }`}
+          className={`p-4 rounded-lg border-2 font-medium transition-all flex items-center justify-center gap-2
+            ${
+              value === true
+                ? "border-green-600 bg-green-50 text-green-900 ring-2 ring-green-200"
+                : "border-gray-300 bg-white text-gray-700 hover:border-green-400"
+            }`}
         >
-          <CheckCircle size={20} />
+          <CheckCircle size={20} className={value === true ? "text-green-700" : ""} />
           Yes
         </button>
+        
         <button
           type="button"
           onClick={() => onChange(false)}
-          className={`p-4 rounded-lg border-2 font-medium transition-all flex items-center justify-center gap-2 ${
-            value === false
-              ? 'border-blue-600 bg-blue-50 text-blue-900 ring-2 ring-blue-200'
-              : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
-          }`}
+          className={`p-4 rounded-lg border-2 font-medium transition-all flex items-center justify-center gap-2
+            ${
+              value === false
+                ? "border-red-600 bg-red-50 text-red-900 ring-2 ring-red-200"
+                : "border-gray-300 bg-white text-gray-700 hover:border-red-400"
+            }`}
         >
-          <XCircle size={20} />
+          <XCircle size={20} className={value === false ? "text-red-700" : ""} />
           No
         </button>
       </div>
+
       {error && <p className="mt-3 text-sm text-red-600 flex items-center gap-2"><AlertCircle size={16} />{error}</p>}
     </div>
   );
