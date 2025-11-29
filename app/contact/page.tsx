@@ -85,7 +85,6 @@ export default function ContactPage() {
 
   // Validation for contact number
   const countryCodes = [
-    { code: "PHL", dial: "+63", length: 10 },      // Philippines
     { code: "ABW", dial: "+297", length: 7 },      // Aruba
     { code: "AFG", dial: "+93", length: 9 },       // Afghanistan
     { code: "AGO", dial: "+244", length: 9 },      // Angola
@@ -94,6 +93,7 @@ export default function ContactPage() {
     { code: "ALB", dial: "+355", length: 9 },      // Albania
     { code: "AND", dial: "+376", length: 6 },      // Andorra
     { code: "ARE", dial: "+971", length: 9 },      // United Arab Emirates
+    { code: "PHL", dial: "+63", length: 10 },      // Philippines
   ];
 
   const countryPhoneLengths: Record<string, number> = countryCodes.reduce(
