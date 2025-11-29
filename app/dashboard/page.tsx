@@ -861,7 +861,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Tab Navigation */}
-            <div className="flex border-b border-gray-200 bg-gray-50 overflow-x-auto">
+            <div className="flex justify-center border-b border-gray-200 bg-gray-50 overflow-x-auto">
               <button
                 onClick={() => setDocumentsTab('licenses')}
                 className={`px-6 py-4 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap ${
@@ -873,6 +873,7 @@ export default function DashboardPage() {
                 <FileCheck size={20} />
                 <span>Licenses</span>
               </button>
+
               <button
                 onClick={() => setDocumentsTab('motor-vehicles')}
                 className={`px-6 py-4 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap ${
@@ -884,6 +885,7 @@ export default function DashboardPage() {
                 <Car size={20} />
                 <span>Motor Vehicles</span>
               </button>
+
               <button
                 onClick={() => setDocumentsTab('no-apprehensions')}
                 className={`px-6 py-4 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap ${
@@ -895,6 +897,7 @@ export default function DashboardPage() {
                 <Shield size={20} />
                 <span>No Apprehensions</span>
               </button>
+
               <button
                 onClick={() => setDocumentsTab('official-receipts')}
                 className={`px-6 py-4 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap ${
