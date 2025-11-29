@@ -204,11 +204,13 @@ const handleConfirmSubmit = (confirmed) => {
               </span>
             </Link>
 
+           
             {/* Navigation Links */}
+             {/* Navigation Links */}
             <div className="hidden md:flex items-center justify-center flex-1 gap-8">
-              <NavLink icon={<Globe size={18} />} href="https://lto.gov.ph/" label="LTO OFFICIAL WEBPAGE" />
+            <NavLink icon={<Globe size={18} />} href="https://lto.gov.ph/" label="LTO OFFICIAL WEBPAGE" />
 
-              <div className="relative">
+             <div className="relative">
                 <button
                   onClick={toggleELearning}
                   className="flex items-center gap-2 px-4 py-2 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/10"
@@ -229,36 +231,56 @@ const handleConfirmSubmit = (confirmed) => {
                 {/* E-Learning Dropdown */}
                 {isELearningOpen && (
                   <div className="absolute top-full left-0 mt-2 w-96 bg-blue-900/98 backdrop-blur-md rounded-xl shadow-2xl border border-blue-400/30 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                    {/* Red accent bar at top */}
                     <div className="h-1 bg-gradient-to-r from-red-600 to-red-500"></div>
                     
                     <div className="py-3">
+                      {/* Main Menu Items */}
                       <div className="space-y-1 px-2">
                         <DropdownLink 
-                          icon={<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>}
+                          icon={
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                            </svg>
+                          }
                           href="#" 
                           label="CDE Online Validation Exam" 
                         />
                         <DropdownLink 
-                          icon={<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>}
+                          icon={
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                            </svg>
+                          }
                           href="#" 
                           label="Driver's License Renewal Course" 
                         />
                         <DropdownLink 
-                          icon={<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"/></svg>}
+                          icon={
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"/>
+                            </svg>
+                          }
                           href="#" 
                           label="LTO Client ID Tutorial" 
                         />
                         <DropdownLink 
-                          icon={<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd"/></svg>}
+                          icon={
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd"/>
+                            </svg>
+                          }
                           href="#" 
                           label="Driver's Manual" 
                         />
                       </div>
 
+                      {/* Divider */}
                       <div className="my-3 px-4">
                         <div className="h-px bg-gradient-to-r from-transparent via-blue-400/40 to-transparent"></div>
                       </div>
 
+                      {/* Sub Menu Items */}
                       <div className="space-y-0.5 px-2">
                         <DropdownSubLink href="#" label="Licensing Information" />
                         <DropdownSubLink href="#" label="Getting Ready to Drive" />
@@ -274,18 +296,20 @@ const handleConfirmSubmit = (confirmed) => {
                 )}
               </div>
 
-              <NavLink icon={<Phone size={18} />} href="/contact" label="CONTACT" />
-              <Link
-                href="/register"
-                className="flex items-center gap-2 px-4 py-2 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/10"
-                aria-label="REGISTER"
-              >
-                <UserPlus size={18} />
-                <span className="hidden lg:inline">REGISTER</span>
-              </Link>
+               <NavLink icon={<Phone size={18} />} href="/contact" label="CONTACT" />
+              <div className="relative">
+                <Link
+                  href="/contact"
+                  className="flex items-center gap-2 px-4 py-2 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/10"
+                  aria-label="REGISTER"
+                >
+                  <UserPlus size={18} />
+                  <span className="hidden lg:inline">REGISTER</span>
+                </Link>
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>
+              </div>
               <NavLink icon={<LogIn size={18} />} href="/login" label="LOGIN" />
             </div>
-
             {/* Hamburger Menu Button - Mobile */}
             <button
               onClick={toggleMobileMenu}
@@ -949,21 +973,23 @@ const handleConfirmSubmit = (confirmed) => {
                
                 
                 {currentStep > 1 && (
-                  <button
-                    onClick={prevStep}
-                    className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus:ring-4 focus:ring-gray-200 flex items-center justify-center gap-2"
-                  >
-                    <ArrowLeft size={20} />
-                    Previous
-                  </button>
+                <button
+                  onClick={prevStep}
+                  className="mr-auto px-6 py-3 bg-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-400 transition-colors focus:outline-none focus:ring-4 focus:ring-gray-200 flex items-center justify-center gap-2"
+                >
+                  <ArrowLeft size={20} />
+                  Previous
+                </button>
+
                 )}
                 <button
-                  onClick={nextStep}
-                  className="flex-1 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-200 flex items-center justify-center gap-2"
-                >
-                  {currentStep === 4 ? 'Create Account' : 'Next'}
-                  {currentStep < 4 && <ChevronRight size={20} />}
-                </button>
+              onClick={nextStep}
+              className="ml-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-200 flex items-center justify-center gap-2"
+            >
+              {currentStep === 4 ? 'Create Account' : 'Next'}
+              {currentStep < 4 && <ChevronRight size={16} />}
+            </button>
+
               </div>
 
               {showConfirmModal && (

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import Image from "next/image";
 import Link from "next/link";
-import { Globe, GraduationCap, Phone, UserPlus, LogIn, Menu, X, User, FileText, Car, Receipt, Landmark, File, UserCircle, Home } from 'lucide-react';
+import { Globe, GraduationCap, Phone, UserPlus, LogIn, Menu, X, User, FileText, Car, Receipt, Landmark, File, UserCircle, Home, AlertCircle, CheckCircle, History, Clock, Search, NotebookTextIcon, WalletCards, FileCheck, Shield, Download, Eye } from 'lucide-react';
 
 export default function DashboardPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -11,7 +11,14 @@ export default function DashboardPage() {
   const [activeModule, setActiveModule] = useState<string | null>(null);
   const [showSuccessAlert, setShowSuccessAlert] = useState(true);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-
+  const [hoveredModule, setHoveredModule] = useState<string | null>(null);
+  const [showViolationsModal, setShowViolationsModal] = useState(false);
+  const [violationsTab, setViolationsTab] = useState<'demerit' | 'unsettled' | 'history'>('demerit');
+  const [transactionsTab, setTransactionsTab] = useState<'open' | 'closed'>('open');
+  const [showTransactionsModal, setShowTransactionsModal] = useState(false);
+  const [documentsTab, setDocumentsTab] = useState<'licenses' | 'motor-vehicles' | 'no-apprehensions' | 'official-receipts'>('licenses');
+  const [showDocumentsModal, setShowDocumentsModal] = useState(false);
+ 
   const userName = "JUAN DELA CRUZ";
   const userClientId = "DELA CRUZ - 25-030915-0841627";
 
@@ -19,16 +26,88 @@ export default function DashboardPage() {
     { id: 'digital-id', name: 'DIGITAL ID', icon: <UserCircle size={48} />, description: 'Manage your digital identification' },
     { id: 'licensing', name: 'LICENSING', icon: <FileText size={48} />, description: 'Driver license applications and renewals' },
     { id: 'vehicle', name: 'VEHICLE', icon: <Car size={48} />, description: 'Vehicle registration and management' },
-    { id: 'transactions', name: 'TRANSACTIONS', icon: <Receipt size={48} />, description: 'View transaction history and receipts' },
+    { id: 'transactions', name: 'TRANSACTIONS', icon: <NotebookTextIcon size={48} />, description: 'View transaction history and receipts' },
     { id: 'violations', name: 'VIOLATIONS', icon: <Landmark size={48} />, description: 'Check and pay traffic violations'},
     { id: 'documents', name: 'DOCUMENTS', icon: <File size={48} />, description: 'Access and download documents' },
     { id: 'profile', name: 'PROFILE', icon: <User size={48} />, description: 'Update your account information' },
   ];
 
+  // Mock data for violations
+  const demeritPointsData = {
+    total: 0,
+    violations: []
+  };
+
+  const unsettledData = [
+    { id: 1, violation: 'Expired Registration', amount: 500, date: '2024-10-15' },
+    { id: 2, violation: 'No Helmet', amount: 300, date: '2024-11-01' },
+  ];
+
+  const historyData = [
+    { id: 1, violation: 'Speeding', amount: 1000, date: '2024-09-20', status: 'Paid' },
+    { id: 2, violation: 'Illegal Parking', amount: 500, date: '2024-08-15', status: 'Paid' },
+  ];
+
+ // Mock data for transactions
+  const openTransactions = [
+    { id: 1, type: 'Driver License Renewal', amount: 500, date: '2024-11-28', status: 'Pending', referenceNo: 'TXN-2024-001' },
+    { id: 2, type: 'Vehicle Registration', amount: 1200, date: '2024-11-25', status: 'Processing', referenceNo: 'TXN-2024-002' },
+    { id: 3, type: 'Digital ID Issuance', amount: 300, date: '2024-11-20', status: 'Pending', referenceNo: 'TXN-2024-003' },
+  ];
+
+  const closedTransactions = [
+    { id: 4, type: 'Professional Driver License', amount: 800, date: '2024-10-15', status: 'Completed', referenceNo: 'TXN-2024-004' },
+    { id: 5, type: 'Vehicle Inspection', amount: 400, date: '2024-09-10', status: 'Completed', referenceNo: 'TXN-2024-005' },
+    { id: 6, type: 'License Renewal', amount: 500, date: '2024-08-05', status: 'Completed', referenceNo: 'TXN-2024-006' },
+  ];
+
+
+ // Mock data for documents
+  const licensesData = [
+    { id: 1, type: 'Non-Professional Driver License', issuedDate: '2022-05-10', expiryDate: '2027-05-10', status: 'Valid', fileUrl: '#' },
+    { id: 2, type: 'Professional Driver License', issuedDate: '2021-03-15', expiryDate: '2026-03-15', status: 'Valid', fileUrl: '#' },
+  ];
+
+  const motorVehiclesData = [
+    { id: 1, plateNumber: 'ABC-1234', vehicleType: 'Sedan', make: 'Toyota Camry', registrationDate: '2023-01-10', expiryDate: '2025-01-10', status: 'Active', fileUrl: '#' },
+    { id: 2, plateNumber: 'XYZ-5678', vehicleType: 'SUV', make: 'Honda CR-V', registrationDate: '2022-06-20', expiryDate: '2024-06-20', status: 'Expired', fileUrl: '#' },
+  ];
+
+  const noApprehensionsData = [
+    { id: 1, certificateNo: 'NAC-2024-001', issuedDate: '2024-11-15', validUntil: '2025-11-15', status: 'Valid', fileUrl: '#' },
+  ];
+
+  const officialReceiptsData = [
+    { id: 1, receiptNo: 'OR-2024-001', description: 'Driver License Renewal', amount: 500, date: '2024-10-20', fileUrl: '#' },
+    { id: 2, receiptNo: 'OR-2024-002', description: 'Vehicle Registration', amount: 1200, date: '2024-09-15', fileUrl: '#' },
+  ];
+
+  useEffect(() => {
+  if (showSuccessAlert) {
+    const timer = setTimeout(() => {
+      setShowSuccessAlert(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }
+}, [showSuccessAlert]);
+
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const toggleELearning = () => setIsELearningOpen(!isELearningOpen);
+  
+   const handleModuleClick = (moduleId: string) => {
+    if (moduleId === 'violations') {
+      setShowViolationsModal(true);
+    } else if (moduleId === 'transactions') {
+      setShowTransactionsModal(true);
+    } else if (moduleId === 'documents') {
+      setShowDocumentsModal(true);
+    }
+  };
+
 
   return (
+    
     <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/bgpic.jpg')" }}>
       <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>   
       {/* Navigation */}
@@ -394,6 +473,7 @@ export default function DashboardPage() {
             return (
               <button
                 key={module.id}
+                onClick={() => handleModuleClick(module.id)}
                 className={`
                   group relative isolate 
                   bg-white/95 hover:bg-white 
@@ -459,6 +539,613 @@ export default function DashboardPage() {
         </div>
       </div>
       </main>
+
+      {/* Violations Modal */}
+      {showViolationsModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[999] p-4 animate-in fade-in duration-300">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-in scale-95 fade-in duration-300">
+            {/* Header */}
+            <div className="sticky top-0 bg-gradient-to-r from-blue-900 to-blue-800 px-6 py-6 flex items-center justify-between border-b border-blue-700">
+              <div className="flex items-center gap-3">
+                <Landmark size={32} className="text-white" />
+                <h2 className="text-2xl font-bold text-white">VIOLATIONS</h2>
+              </div>
+              <button
+                onClick={() => setShowViolationsModal(false)}
+                className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
+                aria-label="Close modal"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Tab Navigation */}
+            <div className="flex border-b border-gray-200 bg-gray-50">
+              <button
+                onClick={() => setViolationsTab('demerit')}
+                className={`flex-1 py-4 px-6 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                  violationsTab === 'demerit'
+                    ? 'text-blue-900 bg-white border-b-2 border-blue-900'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <AlertCircle size={20} />
+                <span>Demerit Points</span>
+              </button>
+              <button
+                onClick={() => setViolationsTab('unsettled')}
+                className={`flex-1 py-4 px-6 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                  violationsTab === 'unsettled'
+                    ? 'text-blue-900 bg-white border-b-2 border-blue-900'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <AlertCircle size={20} />
+                <span>Unsettled</span>
+              </button>
+              <button
+                onClick={() => setViolationsTab('history')}
+                className={`flex-1 py-4 px-6 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                  violationsTab === 'history'
+                    ? 'text-blue-900 bg-white border-b-2 border-blue-900'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <History size={20} />
+                <span>History</span>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              {/* Demerit Points Tab */}
+              {violationsTab === 'demerit' && (
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4 bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
+                    <div className="bg-green-500 rounded-full p-4 flex-shrink-0">
+                      <CheckCircle size={32} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-gray-600 font-medium">Current Demerit Points</p>
+                      <p className="text-4xl font-bold text-green-600 mt-1">{demeritPointsData.total}</p>
+                    </div>
+                  </div>
+                  {demeritPointsData.violations.length === 0 && (
+                    <div className="text-center py-8">
+                      <CheckCircle size={48} className="text-green-500 mx-auto mb-3" />
+                      <p className="text-gray-600 font-medium">No demerit points recorded</p>
+                      <p className="text-gray-400 text-sm mt-1">Keep up the safe driving!</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Unsettled Tab */}
+              {violationsTab === 'unsettled' && (
+                <div className="space-y-4">
+                  {unsettledData.length > 0 ? (
+                    unsettledData.map((violation) => (
+                      <div key={violation.id} className="bg-red-50 border border-red-200 rounded-xl p-4 hover:shadow-md transition-all duration-200">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-start gap-3 flex-1">
+                            <div className="bg-red-500 rounded-full p-3 flex-shrink-0 mt-1">
+                              <AlertCircle size={20} className="text-white" />
+                            </div>
+                            <div>
+                              <p className="font-bold text-gray-800">{violation.violation}</p>
+                              <p className="text-sm text-gray-600 mt-1">Date: {violation.date}</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-2xl font-bold text-red-600">₱{violation.amount}</p>
+                            <button className="mt-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200">
+                              Pay Now
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8">
+                      <CheckCircle size={48} className="text-green-500 mx-auto mb-3" />
+                      <p className="text-gray-600 font-medium">No unsettled violations</p>
+                      <p className="text-gray-400 text-sm mt-1">All your violations have been settled.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* History Tab */}
+              {violationsTab === 'history' && (
+                <div className="space-y-4">
+                  {historyData.length > 0 ? (
+                    historyData.map((violation) => (
+                      <div key={violation.id} className="bg-gray-50 border border-gray-200 rounded-xl p-4 hover:shadow-md transition-all duration-200">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-start gap-3 flex-1">
+                            <div className="bg-green-500 rounded-full p-3 flex-shrink-0 mt-1">
+                              <CheckCircle size={20} className="text-white" />
+                            </div>
+                            <div>
+                              <p className="font-bold text-gray-800">{violation.violation}</p>
+                              <p className="text-sm text-gray-600 mt-1">Date: {violation.date}</p>
+                              <span className="inline-block mt-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
+                                {violation.status}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-2xl font-bold text-gray-800">₱{violation.amount}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8">
+                      <History size={48} className="text-blue-500 mx-auto mb-3" />
+                      <p className="text-gray-600 font-medium">No violation history</p>
+                      <p className="text-gray-400 text-sm mt-1">You have a clean driving record.</p>
+                    </div>
+                  )}
+
+
+                </div>
+              )}
+            </div>
+
+            
+          </div>
+        </div>
+      )}
+
+      {/* Transactions Modal */}
+      {showTransactionsModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[999] p-4 animate-in fade-in duration-300">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto animate-in scale-95 fade-in duration-300">
+            {/* Header */}
+            <div className="sticky top-0 bg-gradient-to-r from-blue-900 to-blue-800 px-6 py-6 flex items-center justify-between border-b border-blue-700">
+              <div className="flex items-center gap-3">
+                <NotebookTextIcon size={32} className="text-white" />
+                <h2 className="text-2xl font-bold text-white">Transaction Overview</h2>
+              </div>
+              <button
+                onClick={() => setShowTransactionsModal(false)}
+                className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
+                aria-label="Close modal"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Tab Navigation */}
+            <div className="flex border-b border-gray-200 bg-gray-50">
+              <button
+                onClick={() => setTransactionsTab('open')}
+                className={`flex-1 py-4 px-6 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                  transactionsTab === 'open'
+                    ? 'text-blue-900 bg-white border-b-2 border-blue-900'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Clock size={20} />
+                <span>Open</span>
+              </button>
+              <button
+                onClick={() => setTransactionsTab('closed')}
+                className={`flex-1 py-4 px-6 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                  transactionsTab === 'closed'
+                    ? 'text-blue-900 bg-white border-b-2 border-blue-900'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <CheckCircle size={20} />
+                <span>Closed</span>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              {/* Open Transactions Tab */}
+              {transactionsTab === 'open' && (
+                <div className="space-y-4">
+                  {openTransactions.length > 0 ? (
+                    openTransactions.map((transaction) => (
+                      <div key={transaction.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-5 hover:shadow-lg transition-all duration-200">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-start gap-4 flex-1">
+                            <div className="bg-blue-500 rounded-full p-3 flex-shrink-0 mt-1">
+                              <NotebookTextIcon size={24} className="text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between mb-2">
+                                <p className="font-bold text-gray-900 text-lg">{transaction.type}</p>
+                                <span className="inline-block bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-bold">
+                                  {transaction.status}
+                                </span>
+                              </div>
+                              <p className="text-sm text-gray-600">Reference No: {transaction.referenceNo}</p>
+                              <p className="text-sm text-gray-600 mt-1">Transaction Date: {transaction.date}</p>
+                            </div>
+                          </div>
+                          <div className="text-right flex-shrink-0">
+                            <p className="text-3xl font-bold text-blue-600">₱{transaction.amount.toLocaleString()}</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-3 pt-3 border-t border-blue-200">
+                          <button className="flex-1 bg-white border border-blue-500 hover:bg-blue-50 text-blue-700 px-4 py-2.5 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2">
+                            <FileText size={16} />
+                            View Details
+                          </button>
+                          <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2">
+                            <WalletCards size={16} />
+                            Pay Now
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-12">
+                      <Search size={48} className="text-gray-300 mx-auto mb-3" />
+                      <p className="text-gray-600 font-medium">No open transactions found</p>
+                      <p className="text-gray-400 text-sm mt-1">You have no pending transactions at this time.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Closed Transactions Tab */}
+              {transactionsTab === 'closed' && (
+                <div className="space-y-4">
+                  {closedTransactions.length > 0 ? (
+                    closedTransactions.map((transaction) => (
+                      <div key={transaction.id} className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5 hover:shadow-lg transition-all duration-200">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-start gap-4 flex-1">
+                            <div className="bg-green-500 rounded-full p-3 flex-shrink-0 mt-1">
+                              <CheckCircle size={24} className="text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between mb-2">
+                                <p className="font-bold text-gray-900 text-lg">{transaction.type}</p>
+                                <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold">
+                                  {transaction.status}
+                                </span>
+                              </div>
+                              <p className="text-sm text-gray-600">Reference No: {transaction.referenceNo}</p>
+                              <p className="text-sm text-gray-600 mt-1">Transaction Date: {transaction.date}</p>
+                            </div>
+                          </div>
+                          <div className="text-right flex-shrink-0">
+                            <p className="text-3xl font-bold text-green-600">₱{transaction.amount.toLocaleString()}</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-3 pt-3 border-t border-green-200">
+                          <button className="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2">
+                            <FileText size={16} />
+                            View Receipt
+                          </button>
+                          
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-12">
+                      <Search size={48} className="text-gray-300 mx-auto mb-3" />
+                      <p className="text-gray-600 font-medium">No closed transactions found</p>
+                      <p className="text-gray-400 text-sm mt-1">You have no completed transactions to display.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+      
+          </div>
+        </div>
+      )}
+
+
+        {/* Documents Modal */}
+      {showDocumentsModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[999] p-4 animate-in fade-in duration-300">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto animate-in scale-95 fade-in duration-300">
+            {/* Header */}
+            <div className="sticky top-0 bg-gradient-to-r from-blue-900 to-blue-800 px-6 py-6 flex items-center justify-between border-b border-blue-700">
+              <div className="flex items-center gap-3">
+                <File size={32} className="text-white" />
+                <h2 className="text-2xl font-bold text-white">Documents</h2>
+              </div>
+              <button
+                onClick={() => setShowDocumentsModal(false)}
+                className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
+                aria-label="Close modal"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Tab Navigation */}
+            <div className="flex border-b border-gray-200 bg-gray-50 overflow-x-auto">
+              <button
+                onClick={() => setDocumentsTab('licenses')}
+                className={`px-6 py-4 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap ${
+                  documentsTab === 'licenses'
+                    ? 'text-blue-900 bg-white border-b-2 border-blue-900'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <FileCheck size={20} />
+                <span>Licenses</span>
+              </button>
+              <button
+                onClick={() => setDocumentsTab('motor-vehicles')}
+                className={`px-6 py-4 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap ${
+                  documentsTab === 'motor-vehicles'
+                    ? 'text-blue-900 bg-white border-b-2 border-blue-900'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Car size={20} />
+                <span>Motor Vehicles</span>
+              </button>
+              <button
+                onClick={() => setDocumentsTab('no-apprehensions')}
+                className={`px-6 py-4 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap ${
+                  documentsTab === 'no-apprehensions'
+                    ? 'text-blue-900 bg-white border-b-2 border-blue-900'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Shield size={20} />
+                <span>No Apprehensions</span>
+              </button>
+              <button
+                onClick={() => setDocumentsTab('official-receipts')}
+                className={`px-6 py-4 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap ${
+                  documentsTab === 'official-receipts'
+                    ? 'text-blue-900 bg-white border-b-2 border-blue-900'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Receipt size={20} />
+                <span>Official Receipts</span>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              {/* Licenses Tab */}
+              {documentsTab === 'licenses' && (
+                <div className="space-y-4">
+                  {licensesData.length > 0 ? (
+                    licensesData.map((license) => (
+                      <div key={license.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-5 hover:shadow-lg transition-all duration-200">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-start gap-4 flex-1">
+                            <div className="bg-blue-600 rounded-full p-3 flex-shrink-0 mt-1">
+                              <FileCheck size={24} className="text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="font-bold text-gray-900 text-lg mb-2">{license.type}</h3>
+                              <div className="grid grid-cols-2 gap-3 text-sm">
+                                <div>
+                                  <p className="text-gray-600 text-xs font-semibold">Issued Date</p>
+                                  <p className="text-gray-900 font-medium">{license.issuedDate}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600 text-xs font-semibold">Expiry Date</p>
+                                  <p className="text-gray-900 font-medium">{license.expiryDate}</p>
+                                </div>
+                              </div>
+                              <div className="mt-3">
+                                <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold">
+                                  {license.status}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-3 pt-4 border-t-2 border-blue-200">
+                        <button className="flex-1 bg-white border border-blue-500 hover:bg-blue-50 text-blue-700 px-4 py-2.5 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2">
+                          <Eye size={16} />
+                          View
+                        </button>
+                        <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2">
+                          <Download size={16} />
+                          Download
+                        </button>
+                      </div>
+
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-12">
+                      <FileCheck size={48} className="text-blue-300 mx-auto mb-3" />
+                      <p className="text-gray-600 font-medium">No Driver Licenses yet</p>
+                      <p className="text-gray-400 text-sm mt-1">You do not have any Driver's Licenses.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Motor Vehicles Tab */}
+              {documentsTab === 'motor-vehicles' && (
+                <div className="space-y-4">
+                  {motorVehiclesData.length > 0 ? (
+                    motorVehiclesData.map((vehicle) => (
+                      <div key={vehicle.id} className={`border-2 rounded-xl p-5 hover:shadow-lg transition-all duration-200 ${
+                        vehicle.status === 'Active' 
+                          ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200' 
+                          : 'bg-gradient-to-r from-gray-50 to-gray-100 border-gray-300'
+                      }`}>
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-start gap-4 flex-1">
+                            <div className={`rounded-full p-3 flex-shrink-0 mt-1 ${
+                              vehicle.status === 'Active' ? 'bg-blue-600' : 'bg-gray-600'
+                            }`}>
+                              <Car size={24} className="text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between mb-2">
+                                <h3 className="font-bold text-gray-900 text-lg">{vehicle.make}</h3>
+                                <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${
+                                  vehicle.status === 'Active'
+                                    ? 'bg-green-100 text-green-800'
+                                    : 'bg-red-100 text-red-800'
+                                }`}>
+                                  {vehicle.status}
+                                </span>
+                              </div>
+                              <p className="text-sm text-gray-600 mb-2">Plate Number: <span className="font-bold text-gray-900">{vehicle.plateNumber}</span></p>
+                              <p className="text-sm text-gray-600 mb-2">Type: <span className="font-bold text-gray-900">{vehicle.vehicleType}</span></p>
+                              <div className="grid grid-cols-2 gap-3 text-sm">
+                                <div>
+                                  <p className="text-gray-600 text-xs font-semibold">Registration Date</p>
+                                  <p className="text-gray-900 font-medium">{vehicle.registrationDate}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600 text-xs font-semibold">Expiry Date</p>
+                                  <p className="text-gray-900 font-medium">{vehicle.expiryDate}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                       <div className="flex gap-3 pt-4 border-t-2 border-blue-200">
+                      <button className="flex-1 bg-white border border-blue-500 hover:bg-blue-50 text-blue-700 px-4 py-2.5 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2">
+                        <Eye size={16} />
+                        View
+                      </button>
+                      <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2">
+                        <Download size={16} />
+                        Download
+                      </button>
+                    </div>
+
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-12">
+                      <Car size={48} className="text-blue-300 mx-auto mb-3" />
+                      <p className="text-gray-600 font-medium">No Motor Vehicles found</p>
+                      <p className="text-gray-400 text-sm mt-1">You have no registered motor vehicles.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* No Apprehensions Tab */}
+              {documentsTab === 'no-apprehensions' && (
+                <div className="space-y-4">
+                  {noApprehensionsData.length > 0 ? (
+                    noApprehensionsData.map((cert) => (
+                      <div key={cert.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-5 hover:shadow-lg transition-all duration-200">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-start gap-4 flex-1">
+                            <div className="bg-blue-600 rounded-full p-3 flex-shrink-0 mt-1">
+                              <Shield size={24} className="text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="font-bold text-gray-900 text-lg mb-2">Certificate of No Apprehension</h3>
+                              <p className="text-sm text-gray-600 mb-2">Certificate No: <span className="font-bold text-gray-900">{cert.certificateNo}</span></p>
+                              <div className="grid grid-cols-2 gap-3 text-sm">
+                                <div>
+                                  <p className="text-gray-600 text-xs font-semibold">Issued Date</p>
+                                  <p className="text-gray-900 font-medium">{cert.issuedDate}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600 text-xs font-semibold">Valid Until</p>
+                                  <p className="text-gray-900 font-medium">{cert.validUntil}</p>
+                                </div>
+                              </div>
+                              <div className="mt-3">
+                                <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold">
+                                  {cert.status}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                       <div className="flex gap-3 pt-4 border-t-2 border-blue-200">
+                      <button className="flex-1 bg-white border border-blue-500 hover:bg-blue-50 text-blue-700 px-4 py-2.5 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2">
+                        <Eye size={16} />
+                        View
+                      </button>
+                      <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2">
+                        <Download size={16} />
+                        Download
+                      </button>
+                    </div>
+
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-12">
+                      <Shield size={48} className="text-blue-300 mx-auto mb-3" />
+                      <p className="text-gray-600 font-medium">No Apprehension Certificate</p>
+                      <p className="text-gray-400 text-sm mt-1">You do not have any Certificate of No Apprehension yet.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Official Receipts Tab */}
+              {documentsTab === 'official-receipts' && (
+                <div className="space-y-4">
+                  {officialReceiptsData.length > 0 ? (
+                    officialReceiptsData.map((receipt) => (
+                      <div key={receipt.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-5 hover:shadow-lg transition-all duration-200">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-start gap-4 flex-1">
+                            <div className="bg-blue-600 rounded-full p-3 flex-shrink-0 mt-1">
+                              <Receipt size={24} className="text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="font-bold text-gray-900 text-lg mb-2">{receipt.description}</h3>
+                              <p className="text-sm text-gray-600 mb-2">Receipt No: <span className="font-bold text-gray-900">{receipt.receiptNo}</span></p>
+                              <div className="grid grid-cols-2 gap-3 text-sm">
+                                <div>
+                                  <p className="text-gray-600 text-xs font-semibold">Date</p>
+                                  <p className="text-gray-900 font-medium">{receipt.date}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600 text-xs font-semibold">Amount</p>
+                                  <p className="text-blue-600 font-bold text-lg">₱{receipt.amount.toLocaleString()}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-3 pt-4 border-t-2 border-blue-200">
+                          <button className="flex-1 bg-white border border-blue-500 hover:bg-blue-50 text-blue-700 px-4 py-2.5 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2">
+                            <Eye size={16} />
+                            View
+                          </button>
+                          <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2">
+                            <Download size={16} />
+                            Download
+                          </button>
+                        </div>
+
+
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-12">
+                      <Receipt size={48} className="text-blue-300 mx-auto mb-3" />
+                      <p className="text-gray-600 font-medium">No Official Receipts</p>
+                      <p className="text-gray-400 text-sm mt-1">You do not have any official receipts yet.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            
+          </div>
+        </div>
+      )}
+      
 
       {/* Success Alert - Shown after login */}
       {showSuccessAlert && (

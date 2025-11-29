@@ -651,8 +651,8 @@ export default function ProfilePage() {
               </div>
 
 
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <p className="text-sm text-yellow-800">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <p className="text-sm text-blue-800">
                     <strong>Note:</strong> Provide your home or permanent address where to send
                     billings and notices. The provided address once entered and
                     saved is no longer editable. If you wish to change it,
