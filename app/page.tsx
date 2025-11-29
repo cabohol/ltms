@@ -26,7 +26,7 @@ export default function LTMSPortal() {
       <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>
        {/* Navigation */}
         <nav className="bg-blue-900/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
-            <div className="w-full px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between h-16">
                 {/* Logo Section - Left */}
                 <div className="flex items-center space-x-3 flex-shrink-0">
@@ -44,7 +44,7 @@ export default function LTMSPortal() {
                 </div>
 
                 {/* Navigation Links */}
-                <div className="hidden md:flex items-center justify-center flex-1 gap-8">
+                <div className="hidden md:flex items-center gap-8 ml-auto">
                   <NavLink icon={<Globe size={18} />} href="https://lto.gov.ph/" label="LTO OFFICIAL WEBPAGE" />
                   <div className="relative">
                     <button
@@ -66,7 +66,7 @@ export default function LTMSPortal() {
                     
                     {/* E-Learning Dropdown */}
                     {isELearningOpen && (
-                      <div className="absolute top-full left-0 mt-2 w-96 bg-blue-900/98 backdrop-blur-md rounded-xl shadow-2xl border border-blue-400/30 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-400">
+                      <div className="absolute top-full left-0 mt-2 w-96 bg-blue-900/98 backdrop-blur-md rounded-xl shadow-2xl border border-blue-400/30 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                         {/* Red accent bar at top */}
                         <div className="h-1 bg-gradient-to-r from-red-600 to-red-500"></div>
                         
@@ -263,8 +263,8 @@ export default function LTMSPortal() {
               </span>
             </a>
             </div>
-
-            <div className="pb-9 sm:pt-5 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-white px-4">
+            
+            <div className="pb-9 sm:pt-20 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-white px-4">
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-white/20 w-full sm:w-auto max-w-[280px] sm:max-w-none">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse flex-shrink-0"></div>
                 <span className="font-semibold text-xs sm:text-sm md:text-base">Release 2.5.4</span>

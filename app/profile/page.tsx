@@ -62,7 +62,7 @@ export default function ProfilePage() {
       <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>
       {/* Navigation */}
       <nav className="relative bg-blue-900/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo Section */}
             <Link href="/" className="flex items-center space-x-3 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg">
@@ -80,7 +80,7 @@ export default function ProfilePage() {
             </Link>
 
             {/* Desktop Navigation Links - Center */}
-            <div className="hidden md:flex items-center justify-center flex-1 gap-4">
+            <div className="hidden md:flex items-center justify-center gap-4">
               <NavLink icon={<Globe size={18} />} href="https://lto.gov.ph/" label="LTO OFFICIAL WEBPAGE" />
 
               {/* E-Learning Dropdown */}

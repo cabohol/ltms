@@ -187,7 +187,7 @@ const handleConfirmSubmit = (confirmed) => {
       <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>
       {/* Navigation */}
       <nav className="bg-blue-900/95 backdrop-blur-sm border-b border-white/10 top-0 z-50">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo Section */}
             <Link href="/" className="flex items-center space-x-3 flex-shrink-0">
@@ -207,7 +207,7 @@ const handleConfirmSubmit = (confirmed) => {
            
             {/* Navigation Links */}
              {/* Navigation Links */}
-            <div className="hidden md:flex items-center justify-center flex-1 gap-8">
+            <div className="hidden md:flex items-center justify-center gap-8">
             <NavLink icon={<Globe size={18} />} href="https://lto.gov.ph/" label="LTO OFFICIAL WEBPAGE" />
 
              <div className="relative">
@@ -975,7 +975,7 @@ const handleConfirmSubmit = (confirmed) => {
                 {currentStep > 1 && (
                 <button
                   onClick={prevStep}
-                  className="mr-auto px-6 py-3 bg-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-400 transition-colors focus:outline-none focus:ring-4 focus:ring-gray-200 flex items-center justify-center gap-2"
+                  className="mr-auto px-6 py-3 bg-white border border-blue-500 hover:bg-blue-50 text-blue-700  font-semibold rounded-lg transition-colors focus:outline-none focus:ring-4 focus:ring-blue-200 flex items-center justify-center gap-2"
                 >
                   <ArrowLeft size={20} />
                   Previous

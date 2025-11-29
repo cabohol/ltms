@@ -110,9 +110,9 @@ export default function DashboardPage() {
     
     <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/bgpic.jpg')" }}>
       <div className="absolute inset-0 bg-blue-900/70 backdrop-blur-[1px]"></div>   
-      {/* Navigation */}
-      <nav className="relative bg-blue-900/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+     {/* Navigation */}
+      <nav className="bg-blue-900/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo Section */}
             <Link href="/" className="flex items-center space-x-3 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg">
@@ -130,14 +130,14 @@ export default function DashboardPage() {
             </Link>
 
             {/* Desktop Navigation Links - Center */}
-            <div className="hidden md:flex items-center justify-center flex-1 gap-4">
+            <div className="hidden md:flex items-center gap-1 lg:gap-2">
               <NavLink icon={<Globe size={18} />} href="https://lto.gov.ph/" label="LTO OFFICIAL WEBPAGE" />
 
               {/* E-Learning Dropdown */}
               <div className="relative">
                 <button
                   onClick={toggleELearning}
-                  className="flex items-center gap-2 px-4 py-2 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/10"
+                  className="flex items-center gap-2 px-3 lg:px-4 py-2 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/10"
                   aria-label="E-LEARNING"
                   aria-expanded={isELearningOpen}
                 >
@@ -203,10 +203,11 @@ export default function DashboardPage() {
               </div>
 
               <NavLink icon={<Phone size={18} />} href="/contact" label="CONTACT" />
+              
               <div className="relative">
                 <Link
                   href="/dashboard"
-                  className="flex items-center gap-2 px-4 py-2 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/10"
+                  className="flex items-center gap-2 px-3 lg:px-4 py-2 text-white font-semibold text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
                   aria-label="DASHBOARD"
                   aria-current="page"
                 >
@@ -220,12 +221,12 @@ export default function DashboardPage() {
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 px-4 py-2 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/10"
+                  className="flex items-center gap-2 px-3 lg:px-4 py-2 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/10"
                   aria-label="User menu"
                   aria-expanded={isUserMenuOpen}
                 >
                   <User size={18} />
-                  <span className="hidden xl:inline">{userClientId}</span>
+                  <span className="hidden xl:inline text-xs">{userClientId}</span>
                   <svg 
                     className={`w-4 h-4 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} 
                     fill="none" 
@@ -243,19 +244,18 @@ export default function DashboardPage() {
                     <div className="h-1 bg-gradient-to-r from-red-600 to-red-500"></div>
                     
                     <div className="py-2">
-                    <div className="px-4 py-3 border-b border-white/10 flex items-center gap-3">
-                      <img 
-                        src="https://www.citypng.com/public/uploads/preview/png-round-blue-contact-user-profile-icon-701751694975293fcgzulxp2k.png"
-                        alt="User Avatar"
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
-
-                      <div>
-                        <p className="text-white font-semibold text-sm">{userName}</p>
-                        <p className="text-blue-300 text-xs mt-1">{userClientId}</p>
+                      <div className="px-4 py-3 border-b border-white/10 flex items-center gap-3">
+                        <img 
+                          src="https://www.citypng.com/public/uploads/preview/png-round-blue-contact-user-profile-icon-701751694975293fcgzulxp2k.png"
+                          alt="User Avatar"
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                        <div>
+                          <p className="text-white font-semibold text-sm">{userName}</p>
+                          <p className="text-blue-300 text-xs mt-1">{userClientId}</p>
+                        </div>
                       </div>
-                    </div>
-               
+              
                       <a
                         href="/login"
                         className="group flex items-center gap-3 px-4 py-3 text-white font-semibold text-sm rounded-lg hover:bg-blue-800/60 active:bg-blue-700/80 transition-all duration-200 hover:translate-x-1 focus:outline-none focus:ring-2 focus:ring-white/50 m-2"
@@ -403,7 +403,6 @@ export default function DashboardPage() {
           )}
         </div>
       </nav>
-
       {/* Main Content */}
       <main className="relative overflow-hidden min-h-[calc(100vh-4rem)]">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -506,11 +505,8 @@ export default function DashboardPage() {
           </div>
 
           {/* Footer Info */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-9">
-            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-white/20 w-full sm:w-auto max-w-[280px] sm:max-w-none">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse flex-shrink-0"></div>
-              <span className="font-semibold text-xs sm:text-sm md:text-base text-white">Release 2.5.4</span>
-            </div>
+          <div className="flex flex-col sm:pt-10 flex-row  gap-6 mb-9">
+           
           </div>
         </div>
 
