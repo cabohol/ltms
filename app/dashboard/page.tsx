@@ -516,7 +516,7 @@ export default function DashboardPage() {
             <div className="sticky top-0 bg-gradient-to-r from-blue-900 to-blue-800 px-6 py-6 flex items-center justify-between border-b border-blue-700">
               <div className="flex items-center gap-3">
                 <Landmark size={32} className="text-white" />
-                <h2 className="text-2xl font-bold text-white">VIOLATIONS</h2>
+                <h2 className="text-2xl font-bold text-white">Violations</h2>
               </div>
               <button
                 onClick={() => setShowViolationsModal(false)}
@@ -1169,67 +1169,90 @@ export default function DashboardPage() {
               {/* Personal Info Tab */}
               {profileTab === 'personal' && (
                 <div className="space-y-6">
-                  <div>
-                    <h2 className="flex items-center text-2xl font-bold text-blue-800 mb-6 space-x-2">
-                      <User className="w-6 h-6 text-blue-800" />
-                      <span>Personal Information</span>
-                    </h2>
+                <div>
+                  <h2 className="flex items-center text-2xl font-bold text-blue-800 mb-6 space-x-2">
+                    <User className="w-6 h-6 text-blue-800" />
+                    <span>Personal Information</span>
+                  </h2>
+                </div>
+
+                <div className="w-full md:w-2/2">
+                  <label className="block text-sm font-medium text-blue-800 mb-2">
+                    LTO Client ID
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c1.105 0 2-.895 2-2V7a2 2 0 10-4 0v2c0 1.105.895 2 2 2zM5 11h14l-1.5 9h-11L5 11z" />
+                      </svg>
+                    </span>
+                    <input
+                      type="text"
+                      defaultValue="25-030915-0841627"
+                      readOnly
+                      className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 text-gray-700 cursor-not-allowed focus:ring-blue-500"
+                    />
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
-                        First Name <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
-                          </svg>
-                        </span>
-                        <input
-                          type="text"
-                          defaultValue="JUAN"
-                          className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                        />
-                      </div>
-                    </div>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
+                      First Name <span className="text-red-500">*</span>
+                    </label>
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
-                        Middle Name <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
-                          </svg>
-                        </span>
-                        <input
-                          type="text"
-                          defaultValue=""
-                          className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
-                        Last Name <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
-                          </svg>
-                        </span>
-                        <input
-                          type="text"
-                          defaultValue="DELA CRUZ"
-                          className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                        />
-                      </div>
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
+                        </svg>
+                      </span>
+                      <input
+                        type="text"
+                        defaultValue="JUAN"
+                        readOnly
+                        className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      />
                     </div>
                   </div>
+
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
+                      Middle Name <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
+                        </svg>
+                      </span>
+                      <input
+                        type="text"
+                        defaultValue=""
+                        className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-2">
+                      Last Name <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
+                        </svg>
+                      </span>
+                      <input
+                        type="text"
+                        defaultValue="DELA CRUZ"
+                        readOnly
+                        className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      />
+                    </div>
+                  </div>
+                </div>
+
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
@@ -1532,6 +1555,41 @@ export default function DashboardPage() {
                       className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     />
                   </div>
+
+                  <div className="border-t pt-6 mt-8">
+                    <h3 className="text-lg font-semibold text-blue-800 mb-4">
+                      Employer's Information
+                    </h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Employer's Name */}
+                      <div className="relative">
+                        <label className="block text-sm font-medium text-blue-800 mb-2">
+                          Employer's Name <span className="text-red-500">*</span>
+                        </label>
+                        <User className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                        <input
+                          type="text"
+                          placeholder="Enter Employer's Name"
+                          className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        />
+                      </div>
+
+                      {/* Employer's Address */}
+                      <div className="relative">
+                        <label className="block text-sm font-medium text-blue-800 mb-2">
+                          Employer's Address <span className="text-red-500">*</span>
+                        </label>
+                        <User className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                        <input
+                          type="text"
+                          placeholder="Enter Employer's Address"
+                          className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
 
                   <div className="border-t pt-6 mt-8">
                     <h3 className="text-lg font-semibold text-blue-800 mb-4">
@@ -1862,7 +1920,7 @@ export default function DashboardPage() {
             </div>
       </div>
     </div>
-  )}
+     )}
       
       {/* Success Alert - Shown after login */}
       {showSuccessAlert && (
