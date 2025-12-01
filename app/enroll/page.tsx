@@ -42,7 +42,7 @@ export default function EnrollmentRedesign() {
     homePhone: ''
   });
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const steps = [
     { number: 1, title: 'Existing License', icon: Shield },
@@ -51,7 +51,7 @@ export default function EnrollmentRedesign() {
     { number: 4, title: 'Contact Information', icon: Mail }
   ];
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
@@ -59,7 +59,7 @@ export default function EnrollmentRedesign() {
   };
 
   const validateStep = () => {
-    const newErrors = {};
+    const newErrors: { [key: string]: string } = {};
     
     if (currentStep === 1) {
       if (formData.hasExistingLicense === null) {
@@ -126,7 +126,7 @@ const nextStep = () => {
   }
 };
 
-const handleConfirmSubmit = (confirmed) => {
+const handleConfirmSubmit = (confirmed: boolean) => {
   if (confirmed) {
     // Clear form and navigate to login
     setFormData({
@@ -542,7 +542,7 @@ const handleConfirmSubmit = (confirmed) => {
                       <QuestionCard
                         question="Do you have a Philippine Driver's or Conductor's License?"
                         value={formData.hasExistingLicense}
-                        onChange={(value) => handleInputChange('hasExistingLicense', value)}
+                        onChange={(value: boolean) => handleInputChange('hasExistingLicense', value)}
                         error={errors.hasExistingLicense}
                         required
                       />
@@ -682,7 +682,7 @@ const handleConfirmSubmit = (confirmed) => {
                       <QuestionCard
                         question="Are you a Filipino citizen?"
                         value={formData.hasFilipinoCitizen}
-                        onChange={(value) => handleInputChange('hasFilipinoCitizen', value)}
+                        onChange={(value: boolean) => handleInputChange('hasFilipinoCitizen', value)}
                         error={errors.hasFilipinoCitizen}
                         required
                       />
@@ -1023,7 +1023,7 @@ const handleConfirmSubmit = (confirmed) => {
 }
 
 // ...existing code...
-function QuestionCard({ question, value, onChange, error, required }) {
+function QuestionCard({ question, value, onChange, error, required }: { question: string; value: boolean | null; onChange: (value: boolean) => void; error?: string; required?: boolean }) {
   return (
     <div className="border border-gray-300 rounded-lg p-6 hover:border-blue-300 transition-colors">
       <label className="block text-base font-semibold text-gray-900 mb-4">
@@ -1064,7 +1064,7 @@ function QuestionCard({ question, value, onChange, error, required }) {
   );
 }
 
-function InputField({ label, type = 'text', value, onChange, error, placeholder, required, icon: Icon }) {
+function InputField({ label, type = 'text', value, onChange, error, placeholder, required, icon: Icon }: { label: string; type?: string; value: string; onChange: (value: string) => void; error?: string; placeholder?: string; required?: boolean; icon?: React.ComponentType<{ size: number }> }) {
   return (
     <div>
       <label className="block text-sm font-semibold text-gray-900 mb-2">
@@ -1093,7 +1093,7 @@ function InputField({ label, type = 'text', value, onChange, error, placeholder,
   );
 }
 
-function SelectField({ value, onChange, options, error }) {
+function SelectField({ value, onChange, options, error }: { value: string; onChange: (value: string) => void; options: Array<{ value: string; label: string }>; error?: string }) {
   return (
     <div>
       <select

@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState , useEffect} from 'react';
+/** @jsxImportSource react */
+import React, { useState, useEffect, useRef } from 'react';
 import Image from "next/image";
 import Link from "next/link";
-import { Globe, GraduationCap, Phone, UserPlus, LogIn, Menu, X, User, FileText, Car, Receipt, Landmark, File, UserCircle, Home, AlertCircle, CheckCircle, History, Clock, Search, NotebookTextIcon, WalletCards, FileCheck, Shield, Download, Eye, Heart, MapPin, Bell, Mail, Check, Save, Activity, Droplet, Feather } from 'lucide-react';
+import { Globe, GraduationCap, Phone, UserPlus, LogIn, Menu, X, User, FileText, Car, Receipt, Landmark, File, UserCircle, Home, AlertCircle, CheckCircle, History, Clock, Search, NotebookTextIcon, WalletCards, FileCheck, Shield, Download, Eye, Heart, MapPin, Bell, Mail, Check, Save, Activity, Droplet, Feather, HelpCircle } from 'lucide-react';
 
 export default function DashboardPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,6 +21,8 @@ export default function DashboardPage() {
   const [showDocumentsModal, setShowDocumentsModal] = useState(false);
   const [profileTab, setProfileTab] = useState<'personal' | 'contact' | 'medical' | 'emergency' | 'address' | 'notifications'>('personal');
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
   const [notifications, setNotifications] = useState({
     deactivation: false,
     transaction: false,
@@ -92,19 +95,19 @@ export default function DashboardPage() {
   ];
 
   useEffect(() => {
-  if (showSuccessAlert) {
-    const timer = setTimeout(() => {
-      setShowSuccessAlert(false);
-    }, 2000);
+    if (showSuccessAlert) {
+      const timer = setTimeout(() => {
+        setShowSuccessAlert(false);
+      }, 2000);
 
-    return () => clearTimeout(timer);
-  }
-}, [showSuccessAlert]);
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccessAlert]);
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const toggleELearning = () => setIsELearningOpen(!isELearningOpen);
   
-   const handleModuleClick = (moduleId: string) => {
+  const handleModuleClick = (moduleId: string) => {
     if (moduleId === 'violations') {
       setShowViolationsModal(true);
     } else if (moduleId === 'transactions') {
@@ -116,7 +119,82 @@ export default function DashboardPage() {
     }
   };
 
+const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [position, setPosition] = useState<'left' | 'center' | 'right'>('center');
 
+  useEffect(() => {
+    if (activeTooltip === id && buttonRef.current) {
+      const button = buttonRef.current;
+      const rect = button.getBoundingClientRect();
+      const windowWidth = window.innerWidth;
+      
+      // Check if button is on left side (less than 1/3 of screen)
+      if (rect.left < windowWidth / 3) {
+        setPosition('left');
+      }
+      // Check if button is on right side
+      else if (rect.right > (windowWidth * 2 / 3)) {
+        setPosition('right');
+      }
+      // Otherwise center
+      else {
+        setPosition('center');
+      }
+    }
+  }, [activeTooltip, id]);
+
+  return (
+    <div className="relative inline-block">
+      <button
+        ref={buttonRef}
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setActiveTooltip(activeTooltip === id ? null : id);
+        }}
+        className="ml-1 text-blue-600 hover:text-blue-800 focus:outline-none transition-colors touch-manipulation"
+        aria-label="More information"
+      >
+        <HelpCircle size={16} className="sm:hidden" />
+        <HelpCircle size={18} className="hidden sm:block" />
+      </button>
+      {activeTooltip === id && (
+        <>
+          {/* Backdrop for closing */}
+          <div 
+            className="fixed inset-0 z-[60]" 
+            onClick={(e) => {
+              e.stopPropagation();
+              setActiveTooltip(null);
+            }}
+          />
+          {/* Tooltip - centered on screen */}
+          <div 
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85vw] xs:w-80 sm:w-96 md:w-[28rem] lg:w-[32rem] max-w-[90vw] bg-blue-900 text-white text-xs xs:text-sm sm:text-base md:text-lg leading-relaxed rounded-lg sm:rounded-xl p-3 xs:p-4 sm:p-5 md:p-6 shadow-2xl z-[61] animate-in fade-in zoom-in-95 duration-200"
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setActiveTooltip(null);
+              }}
+              className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 text-white hover:text-blue-200 p-1 rounded transition-colors touch-manipulation"
+              aria-label="Close"
+            >
+              <X size={16} className="sm:hidden" />
+              <X size={18} className="hidden sm:inline-block md:hidden" />
+              <X size={20} className="hidden md:block" />
+            </button>
+            <p className="pr-7 xs:pr-8 sm:pr-10 leading-relaxed">{content}</p>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
   return (
     
     <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('/bgpic.jpg')" }}>
@@ -1117,18 +1195,21 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Profile Modal */}
+     {/* Profile Modal */}
       {showProfileModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[999] p-4 animate-in fade-in duration-300">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto animate-in scale-95 fade-in duration-300">
             {/* Header */}
             <div className="sticky top-0 bg-gradient-to-r from-blue-900 to-blue-800 px-6 py-6 flex items-center justify-between border-b border-blue-700 z-10">
               <div className="flex items-center gap-3">
-              <User size={32} className="text-white" />
-              <h2 className="text-2xl font-bold text-white">Profile</h2>
+                <User size={32} className="text-white" />
+                <h2 className="text-2xl font-bold text-white">Profile</h2>
               </div>
               <button
-                onClick={() => setShowProfileModal(false)}
+                onClick={() => {
+                  setShowProfileModal(false);
+                  setActiveTooltip(null);
+                }}
                 className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
                 aria-label="Close modal"
               >
@@ -1150,7 +1231,10 @@ export default function DashboardPage() {
                 return (
                   <button
                     key={tab.id}
-                    onClick={() => setProfileTab(tab.id as any)}
+                    onClick={() => {
+                      setProfileTab(tab.id as any);
+                      setActiveTooltip(null);
+                    }}
                     className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 font-bold text-sm transition-all duration-200 whitespace-nowrap ${
                       profileTab === tab.id
                         ? 'text-blue-900 bg-white border-b-2 border-blue-900'
@@ -1165,99 +1249,112 @@ export default function DashboardPage() {
             </div>
 
             {/* Content */}
-            <div className="p-8">
+            <div className="p-4 sm:p-6 lg:p-8">
               {/* Personal Info Tab */}
               {profileTab === 'personal' && (
                 <div className="space-y-6">
-                <div>
-                  <h2 className="flex items-center text-2xl font-bold text-blue-800 mb-6 space-x-2">
-                    <User className="w-6 h-6 text-blue-800" />
-                    <span>Personal Information</span>
-                  </h2>
-                </div>
-
-                <div className="w-full md:w-2/2">
-                  <label className="block text-sm font-medium text-blue-800 mb-2">
-                    LTO Client ID
-                  </label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c1.105 0 2-.895 2-2V7a2 2 0 10-4 0v2c0 1.105.895 2 2 2zM5 11h14l-1.5 9h-11L5 11z" />
-                      </svg>
-                    </span>
-                    <input
-                      type="text"
-                      defaultValue="25-030915-0841627"
-                      readOnly
-                      className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 text-gray-700 cursor-not-allowed focus:ring-blue-500"
-                    />
+                  <div>
+                    <h2 className="flex items-center text-xl sm:text-2xl font-bold text-blue-800 mb-6 space-x-2">
+                      <User className="w-5 h-5 sm:w-6 sm:h-6 text-blue-800" />
+                      <span>Personal Information</span>
+                    </h2>
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="relative">
-                    <label className="block text-sm font-medium text-blue-800 mb-2">
-                      First Name <span className="text-red-500">*</span>
+                  <div className="w-full">
+                    <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
+                      LTO Client ID
+                      <InfoTooltip 
+                        id="client-id" 
+                        content="This number is automatically assigned when the user registers. It serves as your unique identifier in the LTO system." 
+                      />
                     </label>
                     <div className="relative">
                       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c1.105 0 2-.895 2-2V7a2 2 0 10-4 0v2c0 1.105.895 2 2 2zM5 11h14l-1.5 9h-11L5 11z" />
                         </svg>
                       </span>
                       <input
                         type="text"
-                        defaultValue="JUAN"
+                        defaultValue="25-030915-0841627"
                         readOnly
-                        className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 bg-gray-100 text-gray-700 cursor-not-allowed"
                       />
                     </div>
                   </div>
 
-                  <div className="relative">
-                    <label className="block text-sm font-medium text-blue-800 mb-2">
-                      Middle Name <span className="text-red-500">*</span>
-                    </label>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
-                        </svg>
-                      </span>
-                      <input
-                        type="text"
-                        defaultValue=""
-                        className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                      />
+                        <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
+                          First Name <span className="text-red-500">*</span>
+                          <InfoTooltip 
+                            id="first-name" 
+                            content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license." 
+                          />
+                        </label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                          <User size={18} />
+                        </span>
+                        <input
+                          type="text"
+                          defaultValue="JUAN"
+                          readOnly
+                          className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="relative">
-                    <label className="block text-sm font-medium text-blue-800 mb-2">
-                      Last Name <span className="text-red-500">*</span>
-                    </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A12.07 12.07 0 0112 15c2.608 0 5.017.892 6.879 2.384M12 12a5 5 0 100-10 5 5 0 000 10z" />
-                        </svg>
-                      </span>
-                      <input
-                        type="text"
-                        defaultValue="DELA CRUZ"
-                        readOnly
-                        className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                      />
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
+                        Middle Name
+                        <InfoTooltip 
+                          id="middle-name" 
+                          content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license." 
+                        />
+                      </label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                          <User size={18} />
+                        </span>
+                        <input
+                          type="text"
+                          defaultValue=""
+                          className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="relative">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
+                        Last Name <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="last-name" 
+                          content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license." 
+                        />
+                      </label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                          <User size={18} />
+                        </span>
+                        <input
+                          type="text"
+                          defaultValue="DELA CRUZ"
+                          readOnly
+                          className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Date of Birth <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="dob" 
+                          content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license." 
+                        />
                       </label>
                       <input
                         type="date"
@@ -1267,8 +1364,12 @@ export default function DashboardPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Gender <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="gender" 
+                          content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license." 
+                        />
                       </label>
                       <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option>MALE</option>
@@ -1277,8 +1378,12 @@ export default function DashboardPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Civil Status <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="civil-status" 
+                          content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license." 
+                        />
                       </label>
                       <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option>Single</option>
@@ -1289,10 +1394,14 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Nationality <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="nationality" 
+                          content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license." 
+                        />
                       </label>
                       <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option>FILIPINO - PHL</option>
@@ -1300,8 +1409,12 @@ export default function DashboardPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Place of Birth <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="pob" 
+                          content="Enter the city/municipality where you were born." 
+                        />
                       </label>
                       <input
                         type="text"
@@ -1317,25 +1430,35 @@ export default function DashboardPage() {
               {profileTab === 'contact' && (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="flex items-center space-x-2 text-2xl font-bold text-blue-800 mb-6">
-                      <Mail className="w-6 h-6 text-blue-800" />
+                    <h2 className="flex items-center text-xl sm:text-2xl font-bold text-blue-800 mb-6 space-x-2">
+                      <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-blue-800" />
                       <span>Contact Information</span>
                     </h2>
                   </div>
 
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                     <div className="flex items-start space-x-3">
-                      <div>
-                        <p className="text-sm font-medium text-blue-900">Email Address</p>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-blue-900 flex items-center">
+                          Email Address
+                          <InfoTooltip 
+                            id="email" 
+                            content="A valid and active email address to contact the registrant. E.g. email@domain.com" 
+                          />
+                        </p>
                         <p className="text-sm text-gray-600 mt-1">juandelacruz@email.com</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Country Code <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="country-code" 
+                          content="Select the country code for your mobile number." 
+                        />
                       </label>
                       <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option>PHL (+63)</option>
@@ -1351,10 +1474,14 @@ export default function DashboardPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Mobile Phone <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="mobile" 
+                          content="A local or overseas mobile number where to contact the registrant. e.g. 917-1234567 for delete, please hold delete key" 
+                        />
                       </label>
-                      <div className="flex space-x-3">
+                      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                         <div className="relative flex-1">
                           <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                           <input
@@ -1364,7 +1491,7 @@ export default function DashboardPage() {
                             placeholder="Enter mobile number"
                           />
                         </div>
-                        <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium whitespace-nowrap flex items-center space-x-2">
+                        <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium whitespace-nowrap flex items-center justify-center space-x-2">
                           <Check className="w-5 h-5" />
                           <span>Verify Number</span>
                         </button>
@@ -1387,10 +1514,14 @@ export default function DashboardPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Complexion */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Complexion <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="complexion" 
+                          content="Select the appropriate complexion from the drop-down list." 
+                        />
                       </label>
-                      <User className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <User className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Complexion</option>
                         <option>Fair</option>
@@ -1401,10 +1532,14 @@ export default function DashboardPage() {
 
                     {/* Blood Type */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Blood Type <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="blood-type" 
+                          content="After this field is filled in, the field entry can only be changed by a Medical Clinic." 
+                        />
                       </label>
-                      <Droplet className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <Droplet className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Blood Type</option>
                         <option>A+</option>
@@ -1420,10 +1555,14 @@ export default function DashboardPage() {
 
                     {/* Eye Color */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Eye Color <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="eye-color" 
+                          content="After this field is filled in, the field entry can only be changed by a Medical Clinic." 
+                        />
                       </label>
-                      <Eye className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <Eye className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Eye Color</option>
                         <option>Black</option>
@@ -1436,10 +1575,14 @@ export default function DashboardPage() {
 
                     {/* Body Type */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Body Type <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="body-type" 
+                          content="Select the appropriate body type from the drop-down list." 
+                        />
                       </label>
-                      <Activity className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <Activity className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Body Type</option>
                         <option>Light</option>
@@ -1450,10 +1593,14 @@ export default function DashboardPage() {
 
                     {/* Weight */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Weight (kg) <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="weight" 
+                          content="After this field is filled in, the field entry can only be changed by a Medical Clinic." 
+                        />
                       </label>
-                      <Feather className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <Feather className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <input
                         type="number"
                         placeholder="Enter weight"
@@ -1463,10 +1610,14 @@ export default function DashboardPage() {
 
                     {/* Hair Color */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Hair Color <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="hair-color" 
+                          content="Select the hair color from the drop-down list." 
+                        />
                       </label>
-                      <User className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <User className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Hair Color</option>
                         <option>Black</option>
@@ -1479,10 +1630,14 @@ export default function DashboardPage() {
 
                     {/* Height */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Height (cm) <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="height" 
+                          content="After this field is filled in, the field entry can only be changed by a Medical Clinic." 
+                        />
                       </label>
-                      <MapPin className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <MapPin className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <input
                         type="number"
                         placeholder="Enter Height"
@@ -1492,10 +1647,14 @@ export default function DashboardPage() {
 
                     {/* Organ Donor */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Organ Donor <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="organ-donor" 
+                          content="Select Yes if you want to be an organ donor. Otherwise select No." 
+                        />
                       </label>
-                      <Heart className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <Heart className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Preference</option>
                         <option>Yes</option>
@@ -1518,10 +1677,14 @@ export default function DashboardPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Contact Name */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Contact Name <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="emergency-name" 
+                          content="Full name (last name, first name, middle name) of the emergency contact of the registrant." 
+                        />
                       </label>
-                      <User className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                      <User className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                       <input
                         type="text"
                         placeholder="Enter Name"
@@ -1531,10 +1694,14 @@ export default function DashboardPage() {
 
                     {/* Contact Number */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Contact Number <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="emergency-number" 
+                          content="A local or overseas telephone number to contact the emergency contact. Format: Country code + area code + phone number" 
+                        />
                       </label>
-                      <Phone className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                      <Phone className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                       <input
                         type="tel"
                         placeholder="Enter Number"
@@ -1545,8 +1712,12 @@ export default function DashboardPage() {
 
                   {/* Address */}
                   <div className="relative">
-                    <label className="block text-sm font-medium text-blue-800 mb-2">
+                    <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                       Address <span className="text-red-500">*</span>
+                      <InfoTooltip 
+                        id="emergency-address" 
+                        content="Current address of the emergency contact." 
+                      />
                     </label>
                     <MapPin className="absolute left-3 top-10 text-gray-400" size={18} />
                     <textarea
@@ -1557,17 +1728,24 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="border-t pt-6 mt-8">
-                    <h3 className="text-lg font-semibold text-blue-800 mb-4">
+                    <h3 className="flex items-center text-lg font-semibold text-blue-800 mb-4">
                       Employer's Information
+                      <InfoTooltip 
+                        id="employer-info" 
+                        content="Enter your employer's information for employment verification purposes." 
+                      />
                     </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {/* Employer's Name */}
                       <div className="relative">
-                        <label className="block text-sm font-medium text-blue-800 mb-2">
+                        <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                           Employer's Name <span className="text-red-500">*</span>
+                          <InfoTooltip 
+                            id="employer-name" 
+                            content="Name of the registrant's current employer." 
+                          />
                         </label>
-                        <User className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                        <User className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                         <input
                           type="text"
                           placeholder="Enter Employer's Name"
@@ -1575,12 +1753,15 @@ export default function DashboardPage() {
                         />
                       </div>
 
-                      {/* Employer's Address */}
                       <div className="relative">
-                        <label className="block text-sm font-medium text-blue-800 mb-2">
+                        <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                           Employer's Address <span className="text-red-500">*</span>
+                          <InfoTooltip 
+                            id="employer-address" 
+                            content="Address of the registrant's employer." 
+                          />
                         </label>
-                        <User className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                        <MapPin className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                         <input
                           type="text"
                           placeholder="Enter Employer's Address"
@@ -1590,19 +1771,25 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-
                   <div className="border-t pt-6 mt-8">
-                    <h3 className="text-lg font-semibold text-blue-800 mb-4">
+                    <h3 className="flex items-center text-lg font-semibold text-blue-800 mb-4">
                       Mother's Maiden Name
+                      <InfoTooltip 
+                        id="mother-info" 
+                        content="Enter the mother's maiden name as it appears on official documents." 
+                      />
                     </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {/* First Name */}
                       <div className="relative">
-                        <label className="block text-sm font-medium text-blue-800 mb-2">
+                        <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                           First Name <span className="text-red-500">*</span>
+                          <InfoTooltip 
+                            id="mother-first-name" 
+                            content="First name of your mother. In case the first name was changed by your mother after her marriage please encode the first name she had before her marriage." 
+                          />
                         </label>
-                        <User className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                        <User className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                         <input
                           type="text"
                           placeholder="Enter First Name"
@@ -1610,12 +1797,15 @@ export default function DashboardPage() {
                         />
                       </div>
 
-                      {/* Middle Name */}
                       <div className="relative">
-                        <label className="block text-sm font-medium text-blue-800 mb-2">
+                        <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                           Middle Name <span className="text-red-500">*</span>
+                          <InfoTooltip 
+                            id="mother-middle-name" 
+                            content="The Middle Name of your mother before she married." 
+                          />
                         </label>
-                        <User className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                        <User className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                         <input
                           type="text"
                           placeholder="Enter Middle Name"
@@ -1623,12 +1813,15 @@ export default function DashboardPage() {
                         />
                       </div>
 
-                      {/* Last Name */}
                       <div className="relative">
-                        <label className="block text-sm font-medium text-blue-800 mb-2">
+                        <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                           Last Name <span className="text-red-500">*</span>
+                           <InfoTooltip 
+                            id="mother-last-name" 
+                            content="The Last Name of your mother before she married." 
+                          />
                         </label>
-                        <User className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                        <User className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                         <input
                           type="text"
                           placeholder="Enter Last Name"
@@ -1636,20 +1829,28 @@ export default function DashboardPage() {
                         />
                       </div>
                     </div>
+                    
                   </div>
 
                   <div className="border-t pt-6 mt-8">
-                    <h3 className="text-lg font-semibold text-blue-800 mb-4">
+                    <h3 className="flex items-center text-lg font-semibold text-blue-800 mb-4">
                       Father's Information
+                      <InfoTooltip 
+                        id="father-info" 
+                        content="Enter your father's complete name for identification purposes." 
+                      />
                     </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {/* First Name */}
                       <div className="relative">
-                        <label className="block text-sm font-medium text-blue-800 mb-2">
+                        <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                           First Name <span className="text-red-500">*</span>
+                          <InfoTooltip 
+                            id="father-first-name" 
+                            content="First Name of the registrant's father." 
+                          />
                         </label>
-                        <User className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                        <User className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                         <input
                           type="text"
                           placeholder="Enter First Name"
@@ -1657,12 +1858,15 @@ export default function DashboardPage() {
                         />
                       </div>
 
-                      {/* Middle Name */}
                       <div className="relative">
-                        <label className="block text-sm font-medium text-blue-800 mb-2">
+                        <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                           Middle Name <span className="text-red-500">*</span>
+                           <InfoTooltip 
+                            id="father-middle-name" 
+                            content="Middle Name of the registrant's father." 
+                          />
                         </label>
-                        <User className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                        <User className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                         <input
                           type="text"
                           placeholder="Enter Middle Name"
@@ -1670,12 +1874,15 @@ export default function DashboardPage() {
                         />
                       </div>
 
-                      {/* Last Name */}
                       <div className="relative">
-                        <label className="block text-sm font-medium text-blue-800 mb-2">
+                        <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                           Last Name <span className="text-red-500">*</span>
+                            <InfoTooltip 
+                            id="father-last-name" 
+                            content="Last Name of the registrant's father." 
+                          />
                         </label>
-                        <User className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                        <User className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                         <input
                           type="text"
                           placeholder="Enter Last Name"
@@ -1710,10 +1917,14 @@ export default function DashboardPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* House No. */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         House No. <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="house-no" 
+                          content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license."
+                        />
                       </label>
-                      <Home className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                      <Home className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                       <input
                         type="text"
                         placeholder="Enter House No."
@@ -1723,10 +1934,14 @@ export default function DashboardPage() {
 
                     {/* Street / Village */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Street / Village <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="street" 
+                         content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license."
+                        />
                       </label>
-                      <MapPin className="absolute left-3 top-[42px] text-gray-400" size={18} />
+                      <MapPin className="absolute left-3 bottom-[14px] text-gray-400" size={18} />
                       <input
                         type="text"
                         placeholder="Enter Street or Village"
@@ -1736,10 +1951,14 @@ export default function DashboardPage() {
 
                     {/* Province */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Province <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="province" 
+                          content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license."
+                        />
                       </label>
-                      <Globe className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <Globe className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <select className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Province</option>
                         <option value="Agusan del Norte">Agusan del Norte</option>
@@ -1752,10 +1971,14 @@ export default function DashboardPage() {
 
                     {/* City / Municipality */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         City / Municipality <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="city" 
+                          content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license." 
+                        />
                       </label>
-                      <MapPin className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <MapPin className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <select className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select City/Municipality</option>
                         <option value="Butuan City">Butuan City</option>
@@ -1775,10 +1998,14 @@ export default function DashboardPage() {
 
                     {/* Barangay */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Barangay <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="barangay" 
+                          content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license."
+                        />
                       </label>
-                      <MapPin className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <MapPin className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <select className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Barangay</option>
                         <option value="Ambago">Ambago</option>
@@ -1789,10 +2016,14 @@ export default function DashboardPage() {
 
                     {/* ZIP Code */}
                     <div className="relative">
-                      <label className="block text-sm font-medium text-blue-800 mb-2">
+                      <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         ZIP Code <span className="text-red-500">*</span>
+                        <InfoTooltip 
+                          id="zip" 
+                          content="This field can only be changed by a 'Revision of Records' application in the Driver's License System. after you started a transaction or after you linked your account with a license."
+                        />
                       </label>
-                      <Globe className="absolute left-3 top-[42px] text-gray-400 pointer-events-none" size={18} />
+                      <Globe className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
                       <select className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select ZIP Code</option>
                         <option value="8600">8600 - Butuan City</option>
@@ -1804,8 +2035,12 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="flex flex-col items-center justify-center text-center pt-4">
-                    <label className="text-lg font-semibold text-blue-800 mb-3">
+                    <label className="flex items-center text-lg font-semibold text-blue-800 mb-3">
                       Use a different address as contact address?
+                      <InfoTooltip 
+                        id="different-address" 
+                        content="Select 'Yes' if you want to use a different address for correspondence and communications." 
+                      />
                     </label>
 
                     <div className="flex space-x-6">
@@ -1830,6 +2065,10 @@ export default function DashboardPage() {
                     <h2 className="flex items-center space-x-2 text-2xl font-bold text-blue-800 mb-2">
                       <Bell className="w-6 h-6 text-blue-800" />
                       <span>SMS Notifications</span>
+                      <InfoTooltip 
+                        id="notifications-info" 
+                        content="Manage your SMS notification preferences. Select 'Yes' to receive notifications and 'No' to opt out." 
+                      />
                     </h2>
                   </div>
 
@@ -1840,18 +2079,55 @@ export default function DashboardPage() {
                         className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
                       >
                         <label className="text-sm sm:text-base font-medium text-gray-700 flex-1 mb-2 sm:mb-0 break-words">
-                          {{
-                            deactivation:
-                              "Receive SMS notification after account deactivation?",
-                            transaction:
-                              "Receive SMS notification for transaction confirmation?",
-                            appointment:
-                              "Receive SMS notification 24 hours before every appointment?",
-                            license:
-                              "Receive SMS notification 60 days before your license expires?",
-                            reschedule:
-                              "Receive SMS notification after LTO rescheduled your appointment?",
-                          }[key]}
+                          {
+                            {
+                              deactivation: (
+                                <>
+                                  Receive SMS notification after account deactivation?
+                                  <InfoTooltip 
+                                    id="notif-deactivation" 
+                                    content="Your account will be disabled if you are idle for some time. You can configure, if you want to be noticed after deactivation." 
+                                  />
+                                </>
+                              ),
+                              transaction: (
+                                <>
+                                  Receive SMS notification for transaction confirmation?
+                                  <InfoTooltip 
+                                    id="notif-transaction" 
+                                    content="Receive a SMS as a reminder, before your appointment takes place." 
+                                  />
+                                </>
+                              ),
+                              appointment: (
+                                <>
+                                  Receive SMS notification 24 hours before every appointment?
+                                  <InfoTooltip 
+                                    id="notif-appointment" 
+                                    content="Receive a SMS as a reminder, before your appointment takes place." 
+                                  />
+                                </>
+                              ),
+                              license: (
+                                <>
+                                  Receive SMS notification 60 days before your license expires?
+                                  <InfoTooltip 
+                                    id="notif-license" 
+                                    content="You can configure to receive a SMS reminder before you license expires." 
+                                  />
+                                </>
+                              ),
+                              reschedule: (
+                                <>
+                                  Receive SMS notification after LTO rescheduled your appointment?
+                                  <InfoTooltip 
+                                    id="notif-reschedule" 
+                                    content="LTO may reschedule your appointment if the LTO office, where the appointment is made can not be used for transaction. This can happen due to natural catastrophes, or other unexpected events." 
+                                  />
+                                </>
+                              ),
+                            }[key]
+                          }
                         </label>
 
                         <div className="flex flex-row justify-center gap-2">
@@ -1906,7 +2182,10 @@ export default function DashboardPage() {
               {/* Action Buttons */}
               <div className="flex flex-col md:flex-row justify-end space-y-3 md:space-y-0 md:space-x-4 mt-8 pt-6 border-t">
                 <button 
-                  onClick={() => setShowProfileModal(false)}
+                  onClick={() => {
+                    setShowProfileModal(false);
+                    setActiveTooltip(null);
+                  }}
                   className="flex items-center justify-center w-full md:w-auto space-x-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium"
                 >
                   <X className="w-4 h-4" />
@@ -1918,9 +2197,9 @@ export default function DashboardPage() {
                 </button>
               </div>
             </div>
-      </div>
-    </div>
-     )}
+          </div>
+        </div>
+      )}
       
       {/* Success Alert - Shown after login */}
       {showSuccessAlert && (
