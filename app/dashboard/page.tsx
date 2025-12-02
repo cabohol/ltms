@@ -203,25 +203,15 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
       <nav className="bg-blue-900/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo Section */}
             <Link href="/" className="flex items-center space-x-3 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg">
-              <Image 
-                src="/ltologo.png" 
-                alt="LTO Logo" 
-                width={40} 
-                height={40} 
-                className="w-10 h-10 object-contain"
-                priority
-              />
+              <Image src="/ltologo.png" alt="LTO Logo" width={40} height={40} className="w-10 h-10 object-contain"priority/>
               <span className="text-white font-bold text-lg tracking-wide">
                 LTMS PORTAL
               </span>
             </Link>
 
-            {/* Desktop Navigation Links - Center */}
             <div className="hidden md:flex items-center gap-1 lg:gap-2">
               <NavLink icon={<Globe size={18} />} href="https://lto.gov.ph/" label="LTO OFFICIAL WEBPAGE" />
-
               {/* E-Learning Dropdown */}
               <div className="relative">
                 <button
@@ -292,14 +282,12 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
               </div>
 
               <NavLink icon={<Phone size={18} />} href="/contact" label="CONTACT" />
-              
               <div className="relative">
                 <Link
                   href="/dashboard"
                   className="flex items-center gap-2 px-3 lg:px-4 py-2 text-white font-semibold text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
                   aria-label="DASHBOARD"
-                  aria-current="page"
-                >
+                  aria-current="page">
                   <Home size={18} />
                   <span className="hidden lg:inline">DASHBOARD</span>
                 </Link>
@@ -495,20 +483,16 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
       {/* Main Content */}
       <main className="relative overflow-hidden min-h-[calc(100vh-4rem)]">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Header Section */}
           <div className="text-center mb-12">
-            {/* LTO Logo */}
             <div className="flex justify-center mb-6">
               <div className="relative group">
-                 {/* LTO Logo */}
             <div className="flex justify-center">
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Land_Transportation_Office.svg/1200px-Land_Transportation_Office.svg.png" alt="" className="w-50 mb-6" />
             </div>
 
               </div>
             </div>
-
-            {/* Welcome Message - High Contrast */}
+            
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-2xl animate-in fade-in slide-in-from-top duration-1000">
               WELCOME, <span className="text-white font-black">{userName}</span>
             </h1>
@@ -1393,8 +1377,8 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
                       </select>
                     </div>
                   </div>
-
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    {/* Nationality */}
                     <div>
                       <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Nationality <span className="text-red-500">*</span>
@@ -1406,8 +1390,29 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
                       <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option>FILIPINO - PHL</option>
                       </select>
+
+                      {/* Educational Attainment */}
+                      <div className="mt-4">
+                        <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
+                          Educational Attainment
+                          <InfoTooltip 
+                            id="educ-attainment" 
+                            content="Select your highest completed educational level." 
+                          />
+                        </label>
+                        <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                          <option value="">Select Educational Attainment</option>
+                          <option>Elementary Graduate</option>
+                          <option>High School Graduate</option>
+                          <option>Senior High Graduate</option>
+                          <option>College Level</option>
+                          <option>College Graduate</option>
+                          <option>Post Graduate</option>
+                        </select>
+                      </div>
                     </div>
 
+                    {/* Place of Birth */}
                     <div>
                       <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
                         Place of Birth <span className="text-red-500">*</span>
@@ -1421,6 +1426,22 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
                         placeholder="Enter Place of Birth"
                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                       />
+
+                      {/* TIN */}
+                      <div className="mt-4">
+                        <label className="flex items-center text-sm font-medium text-blue-800 mb-2">
+                          Philippine issued Tax Identification Number
+                          <InfoTooltip 
+                            id="tin" 
+                            content="Enter the TIN issued by the BIR." 
+                          />
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Enter TIN"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1478,7 +1499,7 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
                         Mobile Phone <span className="text-red-500">*</span>
                         <InfoTooltip 
                           id="mobile" 
-                          content="A local or overseas mobile number where to contact the registrant. e.g. 917-1234567 for delete, please hold delete key" 
+                          content="A local or overseas mobile number where to contact the registrant." 
                         />
                       </label>
                       <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
@@ -1522,7 +1543,7 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
                         />
                       </label>
                       <User className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
-                      <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                      <select className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Complexion</option>
                         <option>Fair</option>
                         <option>Medium</option>
@@ -1540,7 +1561,7 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
                         />
                       </label>
                       <Droplet className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
-                      <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                      <select className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Blood Type</option>
                         <option>A+</option>
                         <option>A-</option>
@@ -1563,7 +1584,7 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
                         />
                       </label>
                       <Eye className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
-                      <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                      <select className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Eye Color</option>
                         <option>Black</option>
                         <option>Brown</option>
@@ -1583,7 +1604,7 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
                         />
                       </label>
                       <Activity className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
-                      <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                      <select className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Body Type</option>
                         <option>Light</option>
                         <option>Medium</option>
@@ -1618,7 +1639,7 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
                         />
                       </label>
                       <User className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
-                      <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                      <select className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Hair Color</option>
                         <option>Black</option>
                         <option>Brown</option>
@@ -1655,7 +1676,7 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
                         />
                       </label>
                       <Heart className="absolute left-3 bottom-[14px] text-gray-400 pointer-events-none" size={18} />
-                      <select className="w-full appearance-none pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                      <select className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         <option value="">Select Preference</option>
                         <option>Yes</option>
                         <option>No</option>
@@ -2062,13 +2083,9 @@ const InfoTooltip = ({ id, content }: { id: string; content: string }) => {
               {profileTab === 'notifications' && (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="flex items-center space-x-2 text-2xl font-bold text-blue-800 mb-2">
+                    <h2 className="flex items-center space-x-2 text-2xl font-bold text-blue-800 mb-6">
                       <Bell className="w-6 h-6 text-blue-800" />
                       <span>SMS Notifications</span>
-                      <InfoTooltip 
-                        id="notifications-info" 
-                        content="Manage your SMS notification preferences. Select 'Yes' to receive notifications and 'No' to opt out." 
-                      />
                     </h2>
                   </div>
 

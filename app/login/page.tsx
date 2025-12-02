@@ -353,9 +353,30 @@ const handleSubmit = () => {
             <LogIn className="w-5 h-5" />
             Log In
           </button>
-
             </div>
           </div>
+        </div>
+        {/* MID */}
+        <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 right-4 sm:right-6 md:right-8 left-4 sm:left-auto">
+                  <div className="bg-blue-800/95 backdrop-blur-sm px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-lg border border-blue-400/40 shadow-xl">
+                    <div className="flex items-center gap-2 sm:gap-3 justify-center sm:justify-start">
+                      <Image 
+                        src="/ltologo.png" 
+                        alt="LTO Logo" 
+                        width={48} 
+                        height={48} 
+                        className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain flex-shrink-0"
+                      />
+                      <div className="flex flex-col items-start">
+                        <span className="text-white font-bold text-[10px] sm:text-xs md:text-sm tracking-wide leading-tight">
+                          MANAGEMENT INFORMATION
+                        </span>
+                        <span className="text-blue-200 font-semibold text-[9px] sm:text-[10px] md:text-xs tracking-wider leading-tight">
+                          DIVISION (MID)
+                        </span>
+                      </div>
+                    </div>
+                  </div>
         </div>
       </div>
     </div>

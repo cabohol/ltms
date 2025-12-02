@@ -243,28 +243,38 @@ export default function LTMSPortal() {
               for a progressive land transport sector
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-              <a href="/register" className="group relative px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg rounded-lg shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-500/50 w-full sm:w-auto block text-center">
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  <UserPlus size={24} />
-                  REGISTER NOW
-                </span>
-              </a>
-              
-              <a href="/login"
-              className="group relative px-8 py-4 bg-white text-blue-700 font-semibold text-lg rounded-xl border-2 border-blue-700 
-                        shadow-sm hover:bg-blue-50 
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <a
+              href="/register"
+              className="group relative px-8 py-4 bg-white text-blue-700 font-semibold text-lg rounded-xl 
+                        border-2 border-blue-700 shadow-sm hover:bg-blue-50 
                         transition-all duration-300 hover:scale-[1.03]
-                        focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 
-                        w-full sm:w-auto block text-center">
+                        focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300
+                        w-full sm:w-auto block text-center"
+            >
               <span className="relative z-10 flex items-center justify-center gap-2">
-                <LogIn size={24} aria-hidden="true" />
-                <span>Log In</span>
+                <UserPlus size={24} />
+                REGISTER NOW
               </span>
             </a>
-            </div>
+
+            <a
+              href="/login"
+              className="group relative px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg 
+                        rounded-lg shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 
+                        hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/50 
+                        w-full sm:w-auto block text-center"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <LogIn size={24} aria-hidden="true" />
+                Log In
+              </span>
+            </a>
+
+          </div>
+
             
-            <div className="pb-9 sm:pt-20 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-white px-4">
+            <div className="pb-9 sm:pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-white px-4">
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-white/20 w-full sm:w-auto max-w-[280px] sm:max-w-none">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse flex-shrink-0"></div>
                 <span className="font-semibold text-xs sm:text-sm md:text-base">Release 2.5.4</span>
